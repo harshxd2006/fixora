@@ -1,0 +1,171 @@
+export const problems = [
+  {
+    id: 'messy-desk',
+    title: 'My desk is incredibly messy',
+    shortDesc: 'Struggling to find things and feeling overwhelmed by clutter on your workspace.',
+    longDesc: 'A messy desk can severely impact your productivity and mental clarity. Studies show that physical clutter competes for your attention, resulting in decreased performance and increased stress. Finding a systematic way to organize your cables, pens, and papers can transform your workspace into a productivity haven.',
+    icon: '🌪️',
+    tags: ['organization', 'workspace', 'productivity'],
+    relatedProductIds: ['desk-org-1', 'cable-box-1', 'monitor-riser-1', 'drawer-org-1'],
+    trending: true,
+    difficulty: 'Easy',
+    beforeImage: 'https://picsum.photos/seed/messydeskbefore/600/400',
+    afterImage: 'https://picsum.photos/seed/messydeskafter/600/400'
+  },
+  {
+    id: 'cant-focus',
+    title: 'I can\'t focus on my work',
+    shortDesc: 'Constantly getting distracted by noises, thoughts, or digital notifications.',
+    longDesc: 'Focus is a muscle that needs training, but the right environment makes it much easier. Digital and physical distractions pull you out of the "flow state" which takes an average of 23 minutes to re-enter. Creating a dedicated, sensory-optimized environment can help you maintain deep work for longer periods.',
+    icon: '🧠',
+    tags: ['focus', 'productivity', 'mental'],
+    relatedProductIds: ['noise-earbuds-1', 'white-noise-1', 'fidget-cube-1'],
+    trending: true,
+    difficulty: 'Medium',
+    beforeImage: 'https://picsum.photos/seed/distractedbefore/600/400',
+    afterImage: 'https://picsum.photos/seed/focusedafter/600/400'
+  },
+  {
+    id: 'boring-room',
+    title: 'My room feels boring and lifeless',
+    shortDesc: 'Your space lacks personality, warmth, or that cozy aesthetic vibe you want.',
+    longDesc: 'Your environment heavily influences your mood. A room that feels sterile or boring can drain your energy. Adding dynamic lighting, textures, and personalized elements can completely shift the atmosphere of a room from a simple box to a comforting sanctuary.',
+    icon: '🥱',
+    tags: ['aesthetic', 'lighting', 'decor'],
+    relatedProductIds: ['ambient-light-1', 'desk-lamp-1', 'aroma-diffuser-1'],
+    trending: false,
+    difficulty: 'Easy',
+    beforeImage: 'https://picsum.photos/seed/boringbefore/600/400',
+    afterImage: 'https://picsum.photos/seed/boringafter/600/400'
+  },
+  {
+    id: 'tangled-cables',
+    title: 'Tangled cables everywhere',
+    shortDesc: 'A rat\'s nest of wires under your desk that looks terrible and collects dust.',
+    longDesc: 'Cable management is the unsung hero of a clean setup. Not only do tangled cables look chaotic, they also pose tripping hazards, make cleaning difficult, and can lead to cable damage over time. Routing and hiding them instantly elevates the look of any setup.',
+    icon: '🔌',
+    tags: ['organization', 'cables', 'workspace'],
+    relatedProductIds: ['cable-box-1', 'cable-clips-1', 'cable-sleeves-1'],
+    trending: true,
+    difficulty: 'Medium',
+    beforeImage: 'https://picsum.photos/seed/cablesbefore/600/400',
+    afterImage: 'https://picsum.photos/seed/cablesafter/600/400'
+  },
+  {
+    id: 'cold-coffee',
+    title: 'My coffee always gets cold',
+    shortDesc: 'Forgetting about your hot drink while working until it\'s unpleasantly cold.',
+    longDesc: 'When you\'re in the zone, it\'s easy to forget the coffee you just poured. By the time you remember, it\'s room temperature. Instead of constantly microwaving your drink and ruining the flavor, a smart temperature control solution keeps it perfect for hours.',
+    icon: '☕',
+    tags: ['drink', 'workspace', 'lifestyle'],
+    relatedProductIds: ['smart-mug-1'],
+    trending: false,
+    difficulty: 'Easy',
+    beforeImage: 'https://picsum.photos/seed/coffeebefore/600/400',
+    afterImage: 'https://picsum.photos/seed/coffeeafter/600/400'
+  },
+  {
+    id: 'bad-posture',
+    title: 'My back and neck hurt from sitting',
+    shortDesc: 'Slouching over a laptop or desk all day causing physical discomfort.',
+    longDesc: 'The human body isn\'t designed to sit curled over a screen for 8 hours a day. Poor ergonomics lead to chronic back pain, neck stiffness, and even tension headaches. Elevating your screen and maintaining proper spinal alignment is crucial for long-term health.',
+    icon: '🦴',
+    tags: ['health', 'ergonomics', 'workspace'],
+    relatedProductIds: ['laptop-stand-1', 'monitor-riser-1', 'posture-1'],
+    trending: true,
+    difficulty: 'Hard',
+    beforeImage: 'https://picsum.photos/seed/posturebefore/600/400',
+    afterImage: 'https://picsum.photos/seed/postureafter/600/400'
+  },
+  {
+    id: 'dying-battery',
+    title: 'Devices always running out of battery',
+    shortDesc: 'Constantly searching for chargers and dealing with low battery anxiety.',
+    longDesc: 'In a world where we rely on multiple devices simultaneously, keeping them all charged is a daily chore. Having a centralized, always-ready charging station eliminates the friction of finding cables and ensures your tools are always ready when you are.',
+    icon: '🔋',
+    tags: ['tech', 'power', 'cables'],
+    relatedProductIds: ['wireless-charger-1', 'usb-hub-1'],
+    trending: false,
+    difficulty: 'Easy',
+    beforeImage: 'https://picsum.photos/seed/batterybefore/600/400',
+    afterImage: 'https://picsum.photos/seed/batteryafter/600/400'
+  },
+  {
+    id: 'poor-sleep',
+    title: 'I have trouble falling asleep',
+    shortDesc: 'Tossing and turning, unable to shut your brain off at night.',
+    longDesc: 'Quality sleep is the foundation of health. Blue light from screens, ambient noise, and irregular routines disrupt your circadian rhythm. Creating a wind-down protocol with the right sensory environment can dramatically improve your sleep latency and quality.',
+    icon: '😴',
+    tags: ['health', 'sleep', 'wellness'],
+    relatedProductIds: ['sleep-mask-1', 'white-noise-1', 'blue-glasses-1'],
+    trending: true,
+    difficulty: 'Hard',
+    beforeImage: 'https://picsum.photos/seed/sleepbefore/600/400',
+    afterImage: 'https://picsum.photos/seed/sleepafter/600/400'
+  },
+  {
+    id: 'noisy-room',
+    title: 'Too much background noise',
+    shortDesc: 'Roommates, traffic, or office chatter breaking your concentration.',
+    longDesc: 'Unpredictable background noise is one of the biggest productivity killers. It spikes cortisol levels and breaks concentration. Whether through active noise cancellation or passive acoustic masking, controlling your auditory environment is essential for deep focus.',
+    icon: '🔊',
+    tags: ['focus', 'audio', 'workspace'],
+    relatedProductIds: ['noise-earbuds-1', 'white-noise-1'],
+    trending: false,
+    difficulty: 'Medium',
+    beforeImage: 'https://picsum.photos/seed/noisebefore/600/400',
+    afterImage: 'https://picsum.photos/seed/noiseafter/600/400'
+  },
+  {
+    id: 'hot-laptop',
+    title: 'My laptop overheats and slows down',
+    shortDesc: 'Thermal throttling causing lag during heavy tasks or gaming.',
+    longDesc: 'Modern laptops pack immense power into thin chassis, leading to thermal challenges. When components get too hot, they automatically slow down (throttle) to prevent damage. Improving airflow can restore lost performance and extend the lifespan of your machine.',
+    icon: '🔥',
+    tags: ['tech', 'performance', 'workspace'],
+    relatedProductIds: ['laptop-cooling-1', 'laptop-stand-1'],
+    trending: false,
+    difficulty: 'Medium',
+    beforeImage: 'https://picsum.photos/seed/hotbefore/600/400',
+    afterImage: 'https://picsum.photos/seed/hotafter/600/400'
+  },
+  {
+    id: 'losing-items',
+    title: 'I keep losing my small items',
+    shortDesc: 'Misplacing keys, wallets, pens, and memory cards constantly.',
+    longDesc: 'The "where did I put that" dance wastes time and adds unnecessary frustration to your day. The solution is the organizational principle of "a place for everything and everything in its place." Creating designated catch-alls builds spatial memory.',
+    icon: '🔍',
+    tags: ['organization', 'lifestyle', 'productivity'],
+    relatedProductIds: ['desk-org-1', 'drawer-org-1'],
+    trending: false,
+    difficulty: 'Easy',
+    beforeImage: 'https://picsum.photos/seed/lostbefore/600/400',
+    afterImage: 'https://picsum.photos/seed/lostafter/600/400'
+  },
+  {
+    id: 'bad-lighting',
+    title: 'My video calls look dark and grainy',
+    shortDesc: 'Poor lighting making you look unprofessional or tired on camera.',
+    longDesc: 'Webcams need substantial light to produce a clean image. Overhead room lighting creates harsh shadows under your eyes, while backlighting turns you into a silhouette. Proper front-facing, diffused illumination makes any camera look instantly professional.',
+    icon: '💡',
+    tags: ['lighting', 'tech', 'workspace'],
+    relatedProductIds: ['webcam-light-1', 'desk-lamp-1'],
+    trending: true,
+    difficulty: 'Easy',
+    beforeImage: 'https://picsum.photos/seed/lightingbefore/600/400',
+    afterImage: 'https://picsum.photos/seed/lightingafter/600/400'
+  }
+];
+
+export const problemCategories = [
+  { id: 'Desk Setup', name: 'Desk Setup' },
+  { id: 'Cable Management', name: 'Cable Management' },
+  { id: 'Focus Tools', name: 'Focus Tools' },
+  { id: 'Lighting', name: 'Lighting' },
+  { id: 'Wellness', name: 'Wellness' },
+  { id: 'Sleep & Rest', name: 'Sleep & Rest' }
+];
+
+export const trendingProblems = problems.filter(p => p.trending);
+
+export const getProblemById = (id) => problems.find(p => p.id === id);

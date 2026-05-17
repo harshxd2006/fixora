@@ -1,0 +1,160 @@
+import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Tag, Activity, Lightbulb, Package, Zap } from 'lucide-react';
+import { getProblemById } from '../data/problems';
+import { getProductsByIds } from '../data/products';
+import ProductCard from '../components/ProductCard';
+import BundleCard from '../components/BundleCard';
+import NotFound from '../components/NotFound';
+import SectionHeading from '../components/SectionHeading';
+import CTAButton from '../components/CTAButton';
+
+const ProblemDetail = () => {
+  const { id } = useParams();
+  const problem = getProblemById(id);
+  
+  if (!problem) return <NotFound />;
+
+  const recommendedProducts = getProductsByIds(problem.recommendedProductIds || []);
+  const bundles = problem.bundleIds ? problem.bundleIds.map(bId => getProductsByIds([bId])[0]) : [];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="pt-[88px] pb-24 bg-warm-white min-h-screen"
+    >
+      {/* Header Section */}
+      <section className="bg-white border-b border-border-light pt-8 pb-16 px-6">
+        <div className="container mx-auto max-w-4xl">
+          <Link to="/problems" className="inline-flex items-center gap-2 text-[14px] font-medium text-slate-muted hover:text-ink transition-colors mb-8">
+            <ArrowLeft size={16} /> Back to Problems
+          </Link>
+          
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <span className="bg-tag-bg text-tag-text text-[12px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+              {problem.category}
+            </span>
+            <div className={`text-[12px] font-bold px-3 py-1.5 rounded-full ${
+              problem.difficulty === 'Easy' ? 'bg-[#DCFCE7] text-[#16A34A]' :
+              problem.difficulty === 'Medium' ? 'bg-[#FEF9C3] text-[#CA8A04]' :
+              'bg-[#FEE2E2] text-[#DC2626]'
+            }`}>
+              {problem.difficulty} Fix
+            </div>
+          </div>
+
+          <h1 className="text-[40px] md:text-[56px] font-extrabold text-ink leading-tight tracking-tight mb-6">
+            {problem.title}
+          </h1>
+          
+          <p className="text-[18px] text-slate-muted leading-relaxed mb-8 max-w-3xl">
+            {problem.description || problem.shortDesc}
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {problem.tags?.map(tag => (
+              <span key={tag} className="tag bg-warm-white border border-border-light">
+                <Tag size={12} /> {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Analysis Section */}
+      <section className="py-16 px-6">
+        <div className="container mx-auto max-w-4xl">
+          <div className="bg-white rounded-[24px] p-8 md:p-10 border border-border-light shadow-card relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-5">
+              <Activity size={120} className="text-ink" />
+            </div>
+            
+            <div className="flex items-center gap-2 mb-6">
+              <Zap size={20} className="text-lime fill-lime" />
+              <h2 className="text-[20px] font-bold text-ink">AI Analysis</h2>
+            </div>
+            
+            <div className="space-y-6 relative z-10">
+              <div>
+                <h3 className="text-[14px] font-semibold text-ink uppercase tracking-wider mb-2">Root Cause</h3>
+                <p className="text-[16px] text-slate-muted leading-relaxed">
+                  {problem.rootCause || "Often caused by improper setup, lack of ergonomic support, or prolonged exposure without proper breaks."}
+                </p>
+              </div>
+              
+              <div className="h-px w-full bg-border-light"></div>
+              
+              <div>
+                <h3 className="text-[14px] font-semibold text-ink uppercase tracking-wider mb-2">The Fix</h3>
+                <p className="text-[16px] text-slate-muted leading-relaxed">
+                  {problem.theFix || "Implementing proper support equipment combined with behavioral adjustments. The products recommended below specifically address the structural causes of this issue."}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Recommended Solutions */}
+      <section className="py-16 px-6">
+        <div className="container mx-auto max-w-7xl">
+          <SectionHeading 
+            label="SOLUTIONS" 
+            title="Products that actually fix this."
+          />
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+            {recommendedProducts.map((product, i) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <ProductCard product={product} />
+              </motion.div>
+            ))}
+          </div>
+
+          {recommendedProducts.length === 0 && (
+            <div className="bg-white border border-border-light rounded-[20px] p-12 text-center shadow-sm">
+              <Package size={48} className="mx-auto text-border-light mb-4" />
+              <h3 className="text-[18px] font-semibold text-ink mb-2">No specific products mapped yet</h3>
+              <p className="text-[14px] text-slate-muted">Our AI is currently analyzing the best solutions for this problem.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Smart Bundle (if available) */}
+      {bundles.length > 0 && (
+        <section className="py-16 px-6 bg-ink text-white mt-12">
+          <div className="container mx-auto max-w-7xl">
+            <SectionHeading 
+              label="COMPLETE FIX" 
+              title="Get the Smart Bundle."
+              subtitle="Fix it completely with this AI-curated bundle at a 15% discount."
+              dark
+            />
+            
+            <div className="max-w-4xl mx-auto mt-12">
+              {/* Assuming bundles[0] maps to an actual BundleCard format */}
+              <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-[24px] p-8 text-center flex flex-col items-center">
+                <Package size={48} className="text-lime mb-4" />
+                <h3 className="text-2xl font-bold mb-2">Bundle available for this problem</h3>
+                <p className="text-[#a0a0a0] mb-8 max-w-md">Bundle logic needs mapping to specific bundle objects, but this is a placeholder for the UI.</p>
+                <CTAButton variant="primary">View Bundle Details</CTAButton>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+    </motion.div>
+  );
+};
+
+export default ProblemDetail;
