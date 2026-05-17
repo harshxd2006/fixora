@@ -30,7 +30,7 @@ const Hero = () => {
   const heading2 = "Start Fixing.".split(" ");
 
   return (
-    <section className="pt-[88px] pb-16 px-6 container mx-auto max-w-7xl min-h-screen flex items-center">
+    <section className="pt-12 pb-16 px-6 container mx-auto max-w-7xl min-h-screen flex items-center">
       <motion.div 
         variants={containerVariants}
         initial="hidden"

@@ -15,7 +15,7 @@ const ProblemDetail = () => {
   
   if (!problem) return <NotFound />;
 
-  const recommendedProducts = getProductsByIds(problem.recommendedProductIds || []);
+  const recommendedProducts = getProductsByIds(problem.relatedProductIds || []);
   const bundles = problem.bundleIds ? problem.bundleIds.map(bId => getProductsByIds([bId])[0]) : [];
 
   return (
@@ -23,7 +23,7 @@ const ProblemDetail = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="pt-[88px] pb-24 bg-warm-white min-h-screen"
+      className="pt-12 pb-24 bg-warm-white min-h-screen"
     >
       {/* Header Section */}
       <section className="bg-white border-b border-border-light pt-8 pb-16 px-6">

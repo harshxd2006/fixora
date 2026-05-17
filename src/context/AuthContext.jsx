@@ -36,48 +36,49 @@ export const AuthProvider = ({ children }) => {
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         if (!mounted) return;
         
         if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
           if (session?.user) {
             setUser(session.user);
+            setLoading(false); // Set loading to false immediately to unblock UI
             
-            // Try to fetch profile
-            let userProfile = await fetchProfile(session.user.id);
-            
-            // If profile doesn't exist yet (e.g. Google first login), create it
-            if (!userProfile && event === 'SIGNED_IN') {
-              const { data: newProfile, error: createError } = await supabase
-                .from('profiles')
-                .upsert({
-                  id: session.user.id,
-                  email: session.user.email,
-                  full_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || '',
-                  avatar_url: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || '',
-                  created_at: new Date().toISOString(),
-                })
-                .select()
-                .single();
-                
-              if (!createError && newProfile) {
-                userProfile = newProfile;
+            // Try to fetch profile async without blocking
+            fetchProfile(session.user.id).then(async (userProfile) => {
+              // If profile doesn't exist yet (e.g. Google first login), create it
+              if (!userProfile && event === 'SIGNED_IN') {
+                const { data: newProfile, error: createError } = await supabase
+                  .from('profiles')
+                  .upsert({
+                    id: session.user.id,
+                    email: session.user.email,
+                    full_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || '',
+                    avatar_url: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || '',
+                    created_at: new Date().toISOString(),
+                  })
+                  .select()
+                  .single();
+                  
+                if (!createError && newProfile) {
+                  if (mounted) setProfile(newProfile);
+                }
+              } else {
+                if (mounted) setProfile(userProfile);
               }
-            }
-            
-            setProfile(userProfile);
+            });
             
             // Note: Wishlist sync is handled in WishlistContext which listens to AuthContext
           } else {
             setUser(null);
             setProfile(null);
+            setLoading(false);
           }
         } else if (event === 'SIGNED_OUT') {
           setUser(null);
           setProfile(null);
+          setLoading(false);
         }
-        
-        setLoading(false);
       }
     );
 

@@ -13,6 +13,9 @@ import Wishlist from '../pages/Wishlist';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import Dashboard from '../pages/Dashboard';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import TermsOfService from '../pages/TermsOfService';
+import ReturnPolicy from '../pages/ReturnPolicy';
 import NotFound from '../components/NotFound';
 
 import { useAuth } from '../hooks/useAuth';
@@ -23,7 +26,7 @@ import AuthCallback from '../pages/AuthCallback';
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   
-  if (loading) return null; // Or a loading spinner
+  if (loading) return <div className="p-20 text-center text-ink text-xl">Loading your dashboard...</div>;
   
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -32,8 +35,14 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+import { useEffect } from 'react';
+
 const AppRoutes = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
@@ -49,6 +58,9 @@ const AppRoutes = () => {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/returns" element={<ReturnPolicy />} />
           
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

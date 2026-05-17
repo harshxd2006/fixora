@@ -20,7 +20,7 @@ const Problems = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="pt-[104px] pb-24 px-6 min-h-screen bg-warm-white"
+      className="pt-12 pb-24 px-6 min-h-screen bg-warm-white"
     >
       <div className="container mx-auto max-w-7xl">
         

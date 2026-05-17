@@ -34,9 +34,9 @@ const ProductDetail = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="pt-[88px] pb-24 bg-warm-white min-h-screen"
+      className="pt-12 pb-24 bg-warm-white min-h-screen"
     >
-      <div className="container mx-auto max-w-7xl px-6 pt-8">
+      <div className="container mx-auto max-w-7xl px-6">
         <Link to="/products" className="inline-flex items-center gap-2 text-[14px] font-medium text-slate-muted hover:text-ink transition-colors mb-8">
           <ArrowLeft size={16} /> Back to Products
         </Link>
@@ -154,7 +154,7 @@ const ProductDetail = () => {
                 </ul>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-10">
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <CTAButton className="flex-1 h-[56px] text-[16px]">
                   <ShoppingBag size={20} className="mr-2" /> Add to Cart
                 </CTAButton>
@@ -170,6 +170,29 @@ const ProductDetail = () => {
                   <Heart size={20} className={`mr-2 ${favorite ? 'fill-current' : ''}`} /> 
                   {favorite ? 'Saved' : 'Save'}
                 </button>
+              </div>
+
+              {/* External Purchase Options */}
+              <div className="pt-6 border-t border-border-light mb-10">
+                <h3 className="text-[13px] font-semibold text-ink uppercase tracking-wider mb-4">Available on other platforms</h3>
+                <div className="flex flex-wrap gap-3">
+                  <a 
+                    href={product.externalLinks?.amazon || `https://www.amazon.in/s?k=${encodeURIComponent(product.name)}`} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="flex-1 min-w-[140px] h-[48px] bg-white border border-border-light text-ink hover:border-[#FF9900] hover:text-[#FF9900] rounded-xl flex items-center justify-center font-bold transition-all shadow-sm group"
+                  >
+                    Buy on Amazon
+                  </a>
+                  <a 
+                    href={product.externalLinks?.flipkart || `https://www.flipkart.com/search?q=${encodeURIComponent(product.name)}`} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="flex-1 min-w-[140px] h-[48px] bg-white border border-border-light text-ink hover:border-[#2874F0] hover:text-[#2874F0] rounded-xl flex items-center justify-center font-bold transition-all shadow-sm"
+                  >
+                    Buy on Flipkart
+                  </a>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-border-light pt-8">

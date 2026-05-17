@@ -8,7 +8,7 @@ const About = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="pt-[104px] pb-24 bg-warm-white min-h-screen"
+      className="pt-12 pb-24 bg-warm-white min-h-screen"
     >
       {/* Hero Section */}
       <section className="px-6 py-16 md:py-24 text-center border-b border-border-light bg-white">

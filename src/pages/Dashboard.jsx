@@ -32,10 +32,10 @@ const Dashboard = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="pt-[104px] pb-24 bg-warm-white min-h-screen"
+      className="pt-12 pb-24 bg-warm-white min-h-screen"
     >
       <div className="container mx-auto max-w-7xl px-6">
         
