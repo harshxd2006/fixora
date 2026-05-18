@@ -19,7 +19,6 @@ import {
 } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import * as THREE from 'three'
-import { Link } from 'react-router-dom'
 
 function PremiumDesk() {
   const group = useRef()
@@ -241,17 +240,13 @@ export default function Hero3DSection() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link to="/problems">
-              <button className="rounded-full bg-[#ccff00] px-8 py-4 text-sm font-bold text-black shadow-sm transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                View All Problems →
-              </button>
-            </Link>
+            <button className="rounded-full bg-[#ccff00] px-8 py-4 text-sm font-bold text-black shadow-sm transition-transform hover:scale-[1.02] active:scale-[0.98]">
+              View All Problems →
+            </button>
 
-            <Link to="/about">
-              <button className="rounded-full border border-black/10 bg-white/55 px-8 py-4 text-sm font-semibold text-neutral-800 shadow-sm backdrop-blur-md transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                Watch Demo
-              </button>
-            </Link>
+            <button className="rounded-full border border-black/10 bg-white/55 px-8 py-4 text-sm font-semibold text-neutral-800 shadow-sm backdrop-blur-md transition-transform hover:scale-[1.02] active:scale-[0.98]">
+              Watch Demo
+            </button>
           </div>
         </div>
       </div>
