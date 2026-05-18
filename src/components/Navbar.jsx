@@ -1,7 +1,7 @@
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, ShoppingBag, Heart, Menu, X, User } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, User, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useWishlist } from '../hooks/useWishlist';
 import { useCart } from '../context/CartContext';
@@ -13,6 +13,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
   const { wishlistCount } = useWishlist();
   const { cartCount } = useCart();
@@ -32,8 +33,8 @@ const Navbar = () => {
 
   const navVariants = {
     hidden: { y: -100, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
       transition: { type: 'spring', stiffness: 300, damping: 30 }
     }
@@ -41,7 +42,7 @@ const Navbar = () => {
 
   const menuVariants = {
     closed: { x: '100%' },
-    open: { 
+    open: {
       x: 0,
       transition: { type: 'spring', stiffness: 300, damping: 30 }
     }
@@ -49,28 +50,38 @@ const Navbar = () => {
 
   return (
     <>
-      <motion.nav 
+      <motion.nav
         variants={navVariants}
         initial="hidden"
         animate="visible"
         className="fixed top-0 left-0 right-0 z-50 h-16 glass-nav border-b border-border-light flex items-center"
       >
         <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between h-full">
-          
-          {/* LEFT SECTION: Logo */}
-          <Link to="/store" className="flex-shrink-0">
-            <motion.span 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="text-[22px] font-extrabold text-ink tracking-tight"
-            >
-              Fixora
-            </motion.span>
-          </Link>
+
+          {/* LEFT SECTION: Logo & Mobile Back Button */}
+          <div className="flex items-center gap-2">
+            {location.pathname !== '/store' && location.pathname !== '/' && location.pathname !== '/intro' && (
+              <button
+                onClick={() => navigate(-1)}
+                className="md:hidden text-ink p-1 -ml-1 mr-1 hover:text-lime transition-colors"
+              >
+                <ArrowLeft size={24} />
+              </button>
+            )}
+            <Link to="/store" className="flex-shrink-0">
+              <motion.span
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-[22px] font-extrabold text-ink tracking-tight"
+              >
+                Fixora
+              </motion.span>
+            </Link>
+          </div>
 
           {/* CENTER SECTION: Search */}
           <div className="hidden md:flex flex-1 justify-center px-8">
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.1 }}
@@ -82,7 +93,7 @@ const Navbar = () => {
 
           {/* RIGHT SECTION: Icons & User */}
           <div className="hidden md:flex items-center gap-2">
-            <motion.button 
+            <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => setIsCartOpen(true)}
               className="relative w-10 h-10 rounded-full flex items-center justify-center text-ink hover:bg-muted-white transition-colors"
@@ -92,9 +103,9 @@ const Navbar = () => {
                 <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-lime rounded-full border-2 border-warm-white"></span>
               )}
             </motion.button>
-            
+
             <Link to="/wishlist">
-              <motion.button 
+              <motion.button
                 whileTap={{ scale: 0.97 }}
                 className="relative w-10 h-10 rounded-full flex items-center justify-center text-ink hover:bg-muted-white transition-colors"
               >
@@ -108,7 +119,7 @@ const Navbar = () => {
             <div className="ml-2 pl-2 border-l border-border-light">
               {isAuthenticated ? (
                 <Link to="/dashboard">
-                  <motion.div 
+                  <motion.div
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.97 }}
                     className="flex items-center gap-2 bg-white border border-border-light rounded-full p-1 pr-3 shadow-sm hover:shadow-card transition-all"
@@ -127,7 +138,7 @@ const Navbar = () => {
                 </Link>
               ) : (
                 <Link to="/login">
-                  <motion.div 
+                  <motion.div
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.97 }}
                     className="flex items-center bg-white border border-border-light rounded-full px-4 py-2 text-sm font-medium text-ink shadow-sm hover:shadow-card transition-all"
@@ -141,7 +152,7 @@ const Navbar = () => {
 
           {/* MOBILE TOGGLE & CART */}
           <div className="md:hidden flex items-center gap-2">
-            <button 
+            <button
               onClick={() => setIsCartOpen(true)}
               className="relative p-2 text-ink hover:text-lime transition-colors"
             >
@@ -150,7 +161,7 @@ const Navbar = () => {
                 <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-lime rounded-full border-2 border-warm-white"></span>
               )}
             </button>
-            <button 
+            <button
               className="text-ink p-2"
               onClick={() => setIsMobileMenuOpen(true)}
             >
@@ -164,14 +175,14 @@ const Navbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
               className="fixed inset-0 bg-ink/20 backdrop-blur-sm z-[60] md:hidden"
             />
-            <motion.div 
+            <motion.div
               variants={menuVariants}
               initial="closed"
               animate="open"
@@ -180,7 +191,7 @@ const Navbar = () => {
             >
               <div className="p-6 border-b border-border-light flex justify-between items-center">
                 <span className="text-xl font-bold text-ink">Menu</span>
-                <button 
+                <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2 -mr-2 text-slate-muted hover:text-ink transition-colors"
                 >
@@ -190,8 +201,8 @@ const Navbar = () => {
 
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 <div className="relative w-full">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     placeholder="Search..."
                     className="w-full h-11 bg-warm-white border border-border-light rounded-xl pl-4 pr-10 outline-none text-ink text-sm focus:border-ink transition-colors"
                   />
@@ -201,11 +212,10 @@ const Navbar = () => {
                 <ul className="space-y-4">
                   {NAV_LINKS.map(link => (
                     <li key={link.path}>
-                      <Link 
-                        to={link.path} 
-                        className={`block text-lg font-medium transition-colors ${
-                          location.pathname === link.path ? 'text-ink' : 'text-slate-muted hover:text-ink'
-                        }`}
+                      <Link
+                        to={link.path}
+                        className={`block text-lg font-medium transition-colors ${location.pathname === link.path ? 'text-ink' : 'text-slate-muted hover:text-ink'
+                          }`}
                       >
                         {link.name}
                       </Link>
