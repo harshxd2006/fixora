@@ -139,13 +139,24 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* MOBILE TOGGLE */}
-          <button 
-            className="md:hidden text-ink p-2"
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <Menu size={24} />
-          </button>
+          {/* MOBILE TOGGLE & CART */}
+          <div className="md:hidden flex items-center gap-2">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2 text-ink hover:text-lime transition-colors"
+            >
+              <ShoppingBag size={24} />
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-lime rounded-full border-2 border-warm-white"></span>
+              )}
+            </button>
+            <button 
+              className="text-ink p-2"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu size={24} />
+            </button>
+          </div>
         </div>
       </motion.nav>
 
