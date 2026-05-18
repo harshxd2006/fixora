@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import MainLayout from '../layouts/MainLayout';
 import Home from '../pages/Home';
+import Intro from '../pages/Intro';
 import Problems from '../pages/Problems';
 import ProblemDetail from '../pages/ProblemDetail';
 import Products from '../pages/Products';
@@ -50,8 +51,10 @@ const AppRoutes = () => {
         {/* Auth callback outside MainLayout */}
         <Route path="/auth/callback" element={<AuthCallback />} />
         
+        <Route path="/" element={<Intro />} />
+        
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/store" element={<Home />} />
           <Route path="/problems" element={<Problems />} />
           <Route path="/problems/:id" element={<ProblemDetail />} />
           <Route path="/products" element={<Products />} />

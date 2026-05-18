@@ -58,7 +58,7 @@ const Navbar = () => {
         <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between h-full">
           
           {/* LEFT SECTION: Logo */}
-          <Link to="/" className="flex-shrink-0">
+          <Link to="/store" className="flex-shrink-0">
             <motion.span 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
