@@ -4,7 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ShoppingBag, Heart, Menu, X, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useWishlist } from '../hooks/useWishlist';
+import { useCart } from '../context/CartContext';
 import { NAV_LINKS } from '../utils/constants';
+import SearchBar from './SearchBar';
+import CartDrawer from './CartDrawer';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,6 +15,8 @@ const Navbar = () => {
   const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   const { wishlistCount } = useWishlist();
+  const { cartCount } = useCart();
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,16 +74,9 @@ const Navbar = () => {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.1 }}
-              className="relative w-full max-w-[380px]"
+              className="w-full max-w-[380px]"
             >
-              <input 
-                type="text" 
-                placeholder="Search problems..."
-                className="w-full h-11 bg-white border border-border-light rounded-full pl-5 pr-12 outline-none text-ink text-sm focus:border-ink transition-colors placeholder:text-[#9E9E98]"
-              />
-              <button className="absolute right-1.5 top-1/2 -translate-y-1/2 w-[36px] h-[36px] bg-ink rounded-full flex items-center justify-center text-white hover:bg-black transition-colors">
-                <Search size={16} />
-              </button>
+              <SearchBar placeholder="Search problems..." />
             </motion.div>
           </div>
 
@@ -86,9 +84,13 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-2">
             <motion.button 
               whileTap={{ scale: 0.97 }}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-ink hover:bg-muted-white transition-colors"
+              onClick={() => setIsCartOpen(true)}
+              className="relative w-10 h-10 rounded-full flex items-center justify-center text-ink hover:bg-muted-white transition-colors"
             >
               <ShoppingBag size={20} />
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-lime rounded-full border-2 border-warm-white"></span>
+              )}
             </motion.button>
             
             <Link to="/wishlist">
@@ -231,6 +233,9 @@ const Navbar = () => {
           </>
         )}
       </AnimatePresence>
+
+      {/* CART DRAWER */}
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 };

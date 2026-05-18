@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, Star, ShoppingBag, Truck, RotateCcw, ShieldCheck, Check } from 'lucide-react';
 import { getProductById } from '../data/products';
 import { useWishlist } from '../hooks/useWishlist';
+import { useCart } from '../context/CartContext';
 import { formatINR, getDiscount } from '../utils/formatPrice';
 import NotFound from '../components/NotFound';
 import CTAButton from '../components/CTAButton';
@@ -12,6 +13,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const product = getProductById(id);
   const { isWishlisted, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
   
   if (!product) return <NotFound />;
 
@@ -49,7 +51,7 @@ const ProductDetail = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="bg-white rounded-[32px] p-10 border border-border-light h-[500px] flex items-center justify-center relative shadow-sm"
+              className="bg-gray-50 rounded-[32px] overflow-hidden border border-border-light h-[500px] flex items-center justify-center relative shadow-sm"
             >
               {product.badge && (
                 <div className={`absolute top-6 left-6 text-[12px] font-bold px-3 py-1.5 rounded-full ${
@@ -67,7 +69,10 @@ const ProductDetail = () => {
                 transition={{ duration: 0.3 }}
                 src={images[activeImage]} 
                 alt={product.name} 
-                className="w-full h-full object-contain mix-blend-multiply drop-shadow-xl"
+                className="w-full h-full object-cover rounded-2xl"
+                onError={(e) => {
+                  e.target.src = 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop';
+                }}
               />
             </motion.div>
             
@@ -80,7 +85,14 @@ const ProductDetail = () => {
                     activeImage === i ? 'border-ink ring-1 ring-ink shadow-sm' : 'border-border-light hover:border-slate-400'
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-contain mix-blend-multiply" />
+                  <img 
+                    src={img} 
+                    alt="" 
+                    className="w-full h-full object-cover rounded-xl"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop';
+                    }}
+                  />
                 </button>
               ))}
             </div>
@@ -155,7 +167,10 @@ const ProductDetail = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <CTAButton className="flex-1 h-[56px] text-[16px]">
+                <CTAButton 
+                  className="flex-1 h-[56px] text-[16px]"
+                  onClick={() => addToCart(product)}
+                >
                   <ShoppingBag size={20} className="mr-2" /> Add to Cart
                 </CTAButton>
                 <button 
@@ -173,27 +188,54 @@ const ProductDetail = () => {
               </div>
 
               {/* External Purchase Options */}
-              <div className="pt-6 border-t border-border-light mb-10">
-                <h3 className="text-[13px] font-semibold text-ink uppercase tracking-wider mb-4">Available on other platforms</h3>
-                <div className="flex flex-wrap gap-3">
-                  <a 
-                    href={product.externalLinks?.amazon || `https://www.amazon.in/s?k=${encodeURIComponent(product.name)}`} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="flex-1 min-w-[140px] h-[48px] bg-white border border-border-light text-ink hover:border-[#FF9900] hover:text-[#FF9900] rounded-xl flex items-center justify-center font-bold transition-all shadow-sm group"
-                  >
-                    Buy on Amazon
-                  </a>
-                  <a 
-                    href={product.externalLinks?.flipkart || `https://www.flipkart.com/search?q=${encodeURIComponent(product.name)}`} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="flex-1 min-w-[140px] h-[48px] bg-white border border-border-light text-ink hover:border-[#2874F0] hover:text-[#2874F0] rounded-xl flex items-center justify-center font-bold transition-all shadow-sm"
-                  >
-                    Buy on Flipkart
-                  </a>
+              {product.externalLinks && product.externalLinks.length > 0 ? (
+                <div className="pt-6 border-t border-border-light mb-10">
+                  <h3 className="text-[13px] font-semibold text-ink uppercase tracking-wider mb-4">Available on other platforms</h3>
+                  <div className="flex flex-col gap-3">
+                    {product.externalLinks.map((link, idx) => (
+                      <a 
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center justify-between p-4 bg-white border border-border-light rounded-xl hover:border-ink hover:shadow-sm transition-all group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="font-bold text-ink group-hover:text-lime transition-colors">{link.platform}</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="font-semibold text-ink">{formatINR(link.price)}</span>
+                          <div className="text-[12px] font-bold text-ink px-3 py-1.5 bg-soft-white rounded-full group-hover:bg-ink group-hover:text-white transition-colors">
+                            View Deal
+                          </div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="pt-6 border-t border-border-light mb-10">
+                  <h3 className="text-[13px] font-semibold text-ink uppercase tracking-wider mb-4">Available on other platforms</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <a 
+                      href={`https://www.amazon.in/s?k=${encodeURIComponent(product.name)}`} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="flex-1 min-w-[140px] h-[48px] bg-white border border-border-light text-ink hover:border-[#FF9900] hover:text-[#FF9900] rounded-xl flex items-center justify-center font-bold transition-all shadow-sm group"
+                    >
+                      Search on Amazon
+                    </a>
+                    <a 
+                      href={`https://www.flipkart.com/search?q=${encodeURIComponent(product.name)}`} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="flex-1 min-w-[140px] h-[48px] bg-white border border-border-light text-ink hover:border-[#2874F0] hover:text-[#2874F0] rounded-xl flex items-center justify-center font-bold transition-all shadow-sm"
+                    >
+                      Search on Flipkart
+                    </a>
+                  </div>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-border-light pt-8">
                 <div className="flex items-center gap-3">

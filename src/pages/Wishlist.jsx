@@ -3,12 +3,13 @@ import { Heart, ShoppingBag } from 'lucide-react';
 import { useWishlist } from '../hooks/useWishlist';
 import { getProductsByIds } from '../data/products';
 import ProductCard from '../components/ProductCard';
+import SkeletonCard from '../components/SkeletonCard';
 import SectionHeading from '../components/SectionHeading';
 import CTAButton from '../components/CTAButton';
 import { Link } from 'react-router-dom';
 
 const Wishlist = () => {
-  const { wishlistIds } = useWishlist();
+  const { wishlistIds, loading } = useWishlist();
   const savedProducts = getProductsByIds(wishlistIds);
 
   return (
@@ -27,7 +28,13 @@ const Wishlist = () => {
           <h1 className="text-[32px] md:text-[40px] font-bold text-ink tracking-tight">Your Wishlist</h1>
         </div>
 
-        {savedProducts.length > 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : savedProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {savedProducts.map((product, i) => (
               <motion.div

@@ -1,11 +1,124 @@
+// These are real Unsplash photos matched to each product
+const IMAGES = {
+  'desk-org-1': {
+    main: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1484100356142-db6ab6244067?w=500&h=500&fit=crop',
+  },
+  'cable-box-1': {
+    main: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=500&h=500&fit=crop',
+  },
+  'monitor-riser-1': {
+    main: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500&h=500&fit=crop',
+  },
+  'noise-earbuds-1': {
+    main: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=500&h=500&fit=crop',
+  },
+  'white-noise-1': {
+    main: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&h=500&fit=crop',
+  },
+  'fidget-cube-1': {
+    main: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop',
+  },
+  'ambient-light-1': {
+    main: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=500&h=500&fit=crop',
+  },
+  'desk-lamp-1': {
+    main: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&h=500&fit=crop',
+  },
+  'aroma-diffuser-1': {
+    main: 'https://images.unsplash.com/photo-1600612253971-33b71af39e64?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1600612253971-33b71af39e64?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1608181831718-c9fca4b3cbf6?w=500&h=500&fit=crop',
+  },
+  'cable-clips-1': {
+    main: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop',
+  },
+  'cable-sleeves-1': {
+    main: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=500&h=500&fit=crop',
+  },
+  'smart-mug-1': {
+    main: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&h=500&fit=crop',
+  },
+  'laptop-stand-1': {
+    main: 'https://images.unsplash.com/photo-1611186871525-122bf4dc3830?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1611186871525-122bf4dc3830?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&h=500&fit=crop',
+  },
+  'posture-1': {
+    main: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&h=500&fit=crop',
+  },
+  'wireless-charger-1': {
+    main: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=500&h=500&fit=crop',
+  },
+  'usb-hub-1': {
+    main: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&h=500&fit=crop',
+  },
+  'sleep-mask-1': {
+    main: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=500&fit=crop',
+  },
+  'blue-glasses-1': {
+    main: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1508296695146-257a814070b4?w=500&h=500&fit=crop',
+  },
+  'laptop-cooling-1': {
+    main: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1611186871525-122bf4dc3830?w=500&h=500&fit=crop',
+  },
+  'drawer-org-1': {
+    main: 'https://images.unsplash.com/photo-1484100356142-db6ab6244067?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1484100356142-db6ab6244067?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop',
+  },
+  'webcam-light-1': {
+    main: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=500&h=500&fit=crop',
+    alt1: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=500&h=500&fit=crop&q=80',
+    alt2: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=500&fit=crop',
+  },
+};
+
 export const products = [
   {
     id: 'desk-org-1',
     name: 'Minimalist Desk Organizer',
     price: 1499,
     originalPrice: 1999,
-    image: 'https://picsum.photos/seed/deskorg/500/500',
-    images: ['https://picsum.photos/seed/deskorg/500/500', 'https://picsum.photos/seed/deskorg2/500/500'],
+    image: IMAGES['desk-org-1'].main,
+    images: [
+      IMAGES['desk-org-1'].main,
+      IMAGES['desk-org-1'].alt1,
+      IMAGES['desk-org-1'].alt2,
+    ],
     rating: 4.8,
     reviewCount: 342,
     shortSolution: 'Keeps all your pens and small items in one place.',
@@ -13,6 +126,11 @@ export const products = [
     tags: ['Organization', 'Bamboo', 'Minimal'],
     category: 'Desk Setup',
     solvesProblemIds: ['messy-desk', 'losing-items'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Minimalist Desk Organizer')}`, price: 1541 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Minimalist Desk Organizer')}`, price: 1510 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Minimalist Desk Organizer')}`, price: 1594 }
+    ],
     inStock: true,
     isFeatured: true,
     badge: 'Best Seller'
@@ -22,8 +140,12 @@ export const products = [
     name: 'Stealth Cable Management Box',
     price: 1299,
     originalPrice: 1599,
-    image: 'https://picsum.photos/seed/cablebox/500/500',
-    images: ['https://picsum.photos/seed/cablebox/500/500', 'https://picsum.photos/seed/cablebox2/500/500'],
+    image: IMAGES['cable-box-1'].main,
+    images: [
+      IMAGES['cable-box-1'].main,
+      IMAGES['cable-box-1'].alt1,
+      IMAGES['cable-box-1'].alt2,
+    ],
     rating: 4.6,
     reviewCount: 215,
     shortSolution: 'Hides power strips and tangled wires instantly.',
@@ -31,6 +153,11 @@ export const products = [
     tags: ['Cables', 'Clean', 'Plastic'],
     category: 'Cable Management',
     solvesProblemIds: ['messy-desk', 'tangled-cables'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Stealth Cable Management Box')}`, price: 1342 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Stealth Cable Management Box')}`, price: 1294 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Stealth Cable Management Box')}`, price: 1365 }
+    ],
     inStock: true,
     isFeatured: true,
     badge: 'Sale'
@@ -40,8 +167,12 @@ export const products = [
     name: 'Ergonomic Monitor Riser',
     price: 2499,
     originalPrice: 2999,
-    image: 'https://picsum.photos/seed/riser/500/500',
-    images: ['https://picsum.photos/seed/riser/500/500', 'https://picsum.photos/seed/riser2/500/500'],
+    image: IMAGES['monitor-riser-1'].main,
+    images: [
+      IMAGES['monitor-riser-1'].main,
+      IMAGES['monitor-riser-1'].alt1,
+      IMAGES['monitor-riser-1'].alt2,
+    ],
     rating: 4.9,
     reviewCount: 521,
     shortSolution: 'Elevates screen to eye level and creates storage space below.',
@@ -49,6 +180,11 @@ export const products = [
     tags: ['Ergonomics', 'Wood', 'Storage'],
     category: 'Desk Setup',
     solvesProblemIds: ['bad-posture', 'messy-desk'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Ergonomic Monitor Riser')}`, price: 2531 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Ergonomic Monitor Riser')}`, price: 2511 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Ergonomic Monitor Riser')}`, price: 2554 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -58,8 +194,12 @@ export const products = [
     name: 'FocusPro ANC Earbuds',
     price: 5999,
     originalPrice: 7999,
-    image: 'https://picsum.photos/seed/earbuds/500/500',
-    images: ['https://picsum.photos/seed/earbuds/500/500', 'https://picsum.photos/seed/earbuds2/500/500'],
+    image: IMAGES['noise-earbuds-1'].main,
+    images: [
+      IMAGES['noise-earbuds-1'].main,
+      IMAGES['noise-earbuds-1'].alt1,
+      IMAGES['noise-earbuds-1'].alt2,
+    ],
     rating: 4.7,
     reviewCount: 890,
     shortSolution: 'Blocks out distracting background noise completely.',
@@ -67,6 +207,11 @@ export const products = [
     tags: ['Audio', 'ANC', 'Wireless'],
     category: 'Focus Tools',
     solvesProblemIds: ['cant-focus', 'noisy-room'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('FocusPro ANC Earbuds')}`, price: 6010 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('FocusPro ANC Earbuds')}`, price: 6019 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('FocusPro ANC Earbuds')}`, price: 6038 }
+    ],
     inStock: true,
     isFeatured: true,
     badge: 'New'
@@ -76,8 +221,12 @@ export const products = [
     name: 'Zenith White Noise Machine',
     price: 1999,
     originalPrice: 2499,
-    image: 'https://picsum.photos/seed/whitenoise/500/500',
-    images: ['https://picsum.photos/seed/whitenoise/500/500', 'https://picsum.photos/seed/whitenoise2/500/500'],
+    image: IMAGES['white-noise-1'].main,
+    images: [
+      IMAGES['white-noise-1'].main,
+      IMAGES['white-noise-1'].alt1,
+      IMAGES['white-noise-1'].alt2,
+    ],
     rating: 4.8,
     reviewCount: 432,
     shortSolution: 'Masks distracting sounds to help you focus or sleep.',
@@ -85,6 +234,11 @@ export const products = [
     tags: ['Audio', 'Sleep', 'Focus'],
     category: 'Sleep & Rest',
     solvesProblemIds: ['cant-focus', 'noisy-room', 'poor-sleep'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Zenith White Noise Machine')}`, price: 2031 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Zenith White Noise Machine')}`, price: 1986 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Zenith White Noise Machine')}`, price: 2005 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -94,8 +248,12 @@ export const products = [
     name: 'Infinity Fidget Cube',
     price: 999,
     originalPrice: 1299,
-    image: 'https://picsum.photos/seed/fidget/500/500',
-    images: ['https://picsum.photos/seed/fidget/500/500', 'https://picsum.photos/seed/fidget2/500/500'],
+    image: IMAGES['fidget-cube-1'].main,
+    images: [
+      IMAGES['fidget-cube-1'].main,
+      IMAGES['fidget-cube-1'].alt1,
+      IMAGES['fidget-cube-1'].alt2,
+    ],
     rating: 4.5,
     reviewCount: 156,
     shortSolution: 'Keeps hands busy to improve mental focus.',
@@ -103,6 +261,11 @@ export const products = [
     tags: ['Tactile', 'Focus', 'Metal'],
     category: 'Focus Tools',
     solvesProblemIds: ['cant-focus'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Infinity Fidget Cube')}`, price: 1048 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Infinity Fidget Cube')}`, price: 1028 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Infinity Fidget Cube')}`, price: 1025 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -112,8 +275,12 @@ export const products = [
     name: 'Aura Smart LED Light Bar',
     price: 3499,
     originalPrice: 4299,
-    image: 'https://picsum.photos/seed/lightbar/500/500',
-    images: ['https://picsum.photos/seed/lightbar/500/500', 'https://picsum.photos/seed/lightbar2/500/500'],
+    image: IMAGES['ambient-light-1'].main,
+    images: [
+      IMAGES['ambient-light-1'].main,
+      IMAGES['ambient-light-1'].alt1,
+      IMAGES['ambient-light-1'].alt2,
+    ],
     rating: 4.8,
     reviewCount: 671,
     shortSolution: 'Adds dynamic, customizable color to any room.',
@@ -121,6 +288,11 @@ export const products = [
     tags: ['RGB', 'Smart', 'Decor'],
     category: 'Lighting',
     solvesProblemIds: ['boring-room'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Aura Smart LED Light Bar')}`, price: 3510 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Aura Smart LED Light Bar')}`, price: 3523 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Aura Smart LED Light Bar')}`, price: 3592 }
+    ],
     inStock: true,
     isFeatured: true,
     badge: 'Best Seller'
@@ -130,8 +302,12 @@ export const products = [
     name: 'Lumina Task Lamp',
     price: 2199,
     originalPrice: 2899,
-    image: 'https://picsum.photos/seed/desklamp/500/500',
-    images: ['https://picsum.photos/seed/desklamp/500/500', 'https://picsum.photos/seed/desklamp2/500/500'],
+    image: IMAGES['desk-lamp-1'].main,
+    images: [
+      IMAGES['desk-lamp-1'].main,
+      IMAGES['desk-lamp-1'].alt1,
+      IMAGES['desk-lamp-1'].alt2,
+    ],
     rating: 4.6,
     reviewCount: 289,
     shortSolution: 'Provides targeted lighting and reduces eye strain.',
@@ -139,6 +315,11 @@ export const products = [
     tags: ['Lighting', 'Eye Care', 'Adjustable'],
     category: 'Lighting',
     solvesProblemIds: ['bad-lighting', 'boring-room'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Lumina Task Lamp')}`, price: 2255 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Lumina Task Lamp')}`, price: 2205 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Lumina Task Lamp')}`, price: 2257 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -148,8 +329,12 @@ export const products = [
     name: 'ZenMist Essential Oil Diffuser',
     price: 1899,
     originalPrice: 2299,
-    image: 'https://picsum.photos/seed/diffuser/500/500',
-    images: ['https://picsum.photos/seed/diffuser/500/500', 'https://picsum.photos/seed/diffuser2/500/500'],
+    image: IMAGES['aroma-diffuser-1'].main,
+    images: [
+      IMAGES['aroma-diffuser-1'].main,
+      IMAGES['aroma-diffuser-1'].alt1,
+      IMAGES['aroma-diffuser-1'].alt2,
+    ],
     rating: 4.7,
     reviewCount: 412,
     shortSolution: 'Improves room scent and adds gentle ambient light.',
@@ -157,6 +342,11 @@ export const products = [
     tags: ['Aroma', 'Wellness', 'Decor'],
     category: 'Wellness',
     solvesProblemIds: ['boring-room', 'poor-sleep'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('ZenMist Essential Oil Diffuser')}`, price: 1932 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('ZenMist Essential Oil Diffuser')}`, price: 1884 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('ZenMist Essential Oil Diffuser')}`, price: 1939 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -166,8 +356,12 @@ export const products = [
     name: 'Magnetic Cable Routing Clips',
     price: 899,
     originalPrice: 1099,
-    image: 'https://picsum.photos/seed/clips/500/500',
-    images: ['https://picsum.photos/seed/clips/500/500', 'https://picsum.photos/seed/clips2/500/500'],
+    image: IMAGES['cable-clips-1'].main,
+    images: [
+      IMAGES['cable-clips-1'].main,
+      IMAGES['cable-clips-1'].alt1,
+      IMAGES['cable-clips-1'].alt2,
+    ],
     rating: 4.4,
     reviewCount: 89,
     shortSolution: 'Keeps charging cables from falling off your desk.',
@@ -175,6 +369,11 @@ export const products = [
     tags: ['Cables', 'Magnetic', 'Small'],
     category: 'Cable Management',
     solvesProblemIds: ['tangled-cables'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Magnetic Cable Routing Clips')}`, price: 914 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Magnetic Cable Routing Clips')}`, price: 915 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Magnetic Cable Routing Clips')}`, price: 906 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -184,8 +383,12 @@ export const products = [
     name: 'Neoprene Zip Cable Sleeves',
     price: 1199,
     originalPrice: 1499,
-    image: 'https://picsum.photos/seed/sleeves/500/500',
-    images: ['https://picsum.photos/seed/sleeves/500/500', 'https://picsum.photos/seed/sleeves2/500/500'],
+    image: IMAGES['cable-sleeves-1'].main,
+    images: [
+      IMAGES['cable-sleeves-1'].main,
+      IMAGES['cable-sleeves-1'].alt1,
+      IMAGES['cable-sleeves-1'].alt2,
+    ],
     rating: 4.5,
     reviewCount: 310,
     shortSolution: 'Bundles multiple wires into one clean, thick tube.',
@@ -193,6 +396,11 @@ export const products = [
     tags: ['Cables', 'Neoprene', 'Routing'],
     category: 'Cable Management',
     solvesProblemIds: ['tangled-cables'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Neoprene Zip Cable Sleeves')}`, price: 1213 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Neoprene Zip Cable Sleeves')}`, price: 1236 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Neoprene Zip Cable Sleeves')}`, price: 1262 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -202,8 +410,12 @@ export const products = [
     name: 'Ember Smart Temperature Mug',
     price: 8999,
     originalPrice: 10999,
-    image: 'https://picsum.photos/seed/mug/500/500',
-    images: ['https://picsum.photos/seed/mug/500/500', 'https://picsum.photos/seed/mug2/500/500'],
+    image: IMAGES['smart-mug-1'].main,
+    images: [
+      IMAGES['smart-mug-1'].main,
+      IMAGES['smart-mug-1'].alt1,
+      IMAGES['smart-mug-1'].alt2,
+    ],
     rating: 4.9,
     reviewCount: 1024,
     shortSolution: 'Keeps your drink at the exact perfect temperature for hours.',
@@ -211,6 +423,11 @@ export const products = [
     tags: ['Smart', 'Drinkware', 'Luxury'],
     category: 'Desk Setup',
     solvesProblemIds: ['cold-coffee'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Ember Smart Temperature Mug')}`, price: 9053 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Ember Smart Temperature Mug')}`, price: 9037 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Ember Smart Temperature Mug')}`, price: 9046 }
+    ],
     inStock: true,
     isFeatured: true,
     badge: 'Sale'
@@ -220,8 +437,12 @@ export const products = [
     name: 'Apex Aluminum Laptop Stand',
     price: 2799,
     originalPrice: 3499,
-    image: 'https://picsum.photos/seed/stand/500/500',
-    images: ['https://picsum.photos/seed/stand/500/500', 'https://picsum.photos/seed/stand2/500/500'],
+    image: IMAGES['laptop-stand-1'].main,
+    images: [
+      IMAGES['laptop-stand-1'].main,
+      IMAGES['laptop-stand-1'].alt1,
+      IMAGES['laptop-stand-1'].alt2,
+    ],
     rating: 4.8,
     reviewCount: 745,
     shortSolution: 'Raises laptop screen and improves cooling airflow.',
@@ -229,6 +450,11 @@ export const products = [
     tags: ['Ergonomics', 'Cooling', 'Aluminum'],
     category: 'Desk Setup',
     solvesProblemIds: ['bad-posture', 'hot-laptop'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Apex Aluminum Laptop Stand')}`, price: 2816 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Apex Aluminum Laptop Stand')}`, price: 2783 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Apex Aluminum Laptop Stand')}`, price: 2886 }
+    ],
     inStock: true,
     isFeatured: true,
     badge: 'Best Seller'
@@ -238,8 +464,12 @@ export const products = [
     name: 'Align Posture Corrector Brace',
     price: 1599,
     originalPrice: 1999,
-    image: 'https://picsum.photos/seed/posturebrace/500/500',
-    images: ['https://picsum.photos/seed/posturebrace/500/500', 'https://picsum.photos/seed/posturebrace2/500/500'],
+    image: IMAGES['posture-1'].main,
+    images: [
+      IMAGES['posture-1'].main,
+      IMAGES['posture-1'].alt1,
+      IMAGES['posture-1'].alt2,
+    ],
     rating: 4.2,
     reviewCount: 198,
     shortSolution: 'Gently pulls shoulders back to train muscle memory.',
@@ -247,6 +477,11 @@ export const products = [
     tags: ['Health', 'Wearable', 'Ergonomics'],
     category: 'Wellness',
     solvesProblemIds: ['bad-posture'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Align Posture Corrector Brace')}`, price: 1658 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Align Posture Corrector Brace')}`, price: 1607 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Align Posture Corrector Brace')}`, price: 1610 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -256,8 +491,12 @@ export const products = [
     name: 'Omni 3-in-1 Charging Station',
     price: 3999,
     originalPrice: 4999,
-    image: 'https://picsum.photos/seed/charger/500/500',
-    images: ['https://picsum.photos/seed/charger/500/500', 'https://picsum.photos/seed/charger2/500/500'],
+    image: IMAGES['wireless-charger-1'].main,
+    images: [
+      IMAGES['wireless-charger-1'].main,
+      IMAGES['wireless-charger-1'].alt1,
+      IMAGES['wireless-charger-1'].alt2,
+    ],
     rating: 4.7,
     reviewCount: 512,
     shortSolution: 'Charges phone, watch, and earbuds simultaneously on one pad.',
@@ -265,6 +504,11 @@ export const products = [
     tags: ['Power', 'Wireless', 'Tech'],
     category: 'Desk Setup',
     solvesProblemIds: ['dying-battery', 'tangled-cables'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Omni 3-in-1 Charging Station')}`, price: 4047 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Omni 3-in-1 Charging Station')}`, price: 4013 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Omni 3-in-1 Charging Station')}`, price: 4055 }
+    ],
     inStock: true,
     isFeatured: true,
     badge: 'New'
@@ -274,15 +518,24 @@ export const products = [
     name: 'ProConnect 10-Port USB-C Hub',
     price: 4599,
     originalPrice: 5499,
-    image: 'https://picsum.photos/seed/hub/500/500',
-    images: ['https://picsum.photos/seed/hub/500/500', 'https://picsum.photos/seed/hub2/500/500'],
+    image: IMAGES['usb-hub-1'].main,
+    images: [
+      IMAGES['usb-hub-1'].main,
+      IMAGES['usb-hub-1'].alt1,
+      IMAGES['usb-hub-1'].alt2,
+    ],
     rating: 4.6,
     reviewCount: 320,
     shortSolution: 'Expands your laptop\'s single port into 10 connections.',
-    description: 'The ultimate connectivity solution. Plugs into a single USB-C port and provides HDMI, SD card readers, ethernet, audio, and multiple USB-A and USB-C data and charging ports. Includes pass-through power.',
+    description: 'The ultimate connectivity solution. Plugs into a single USB-C port and provides HDMI, SD card readers, ethernet, audio, and multiple USB-A and USB-C data and charging ports.',
     tags: ['Connectivity', 'Tech', 'Hub'],
     category: 'Desk Setup',
     solvesProblemIds: ['dying-battery', 'tangled-cables'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('ProConnect 10-Port USB-C Hub')}`, price: 4621 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('ProConnect 10-Port USB-C Hub')}`, price: 4612 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('ProConnect 10-Port USB-C Hub')}`, price: 4693 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -292,8 +545,12 @@ export const products = [
     name: 'Eclipse Contoured Sleep Mask',
     price: 1299,
     originalPrice: 1599,
-    image: 'https://picsum.photos/seed/sleepmask/500/500',
-    images: ['https://picsum.photos/seed/sleepmask/500/500', 'https://picsum.photos/seed/sleepmask2/500/500'],
+    image: IMAGES['sleep-mask-1'].main,
+    images: [
+      IMAGES['sleep-mask-1'].main,
+      IMAGES['sleep-mask-1'].alt1,
+      IMAGES['sleep-mask-1'].alt2,
+    ],
     rating: 4.8,
     reviewCount: 840,
     shortSolution: 'Provides 100% blackout without pressing on your eyes.',
@@ -301,6 +558,11 @@ export const products = [
     tags: ['Sleep', 'Travel', 'Comfort'],
     category: 'Sleep & Rest',
     solvesProblemIds: ['poor-sleep'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Eclipse Contoured Sleep Mask')}`, price: 1313 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Eclipse Contoured Sleep Mask')}`, price: 1287 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Eclipse Contoured Sleep Mask')}`, price: 1372 }
+    ],
     inStock: true,
     isFeatured: true,
     badge: 'Best Seller'
@@ -310,8 +572,12 @@ export const products = [
     name: 'Optic Blue Light Blocking Glasses',
     price: 1999,
     originalPrice: 2499,
-    image: 'https://picsum.photos/seed/glasses/500/500',
-    images: ['https://picsum.photos/seed/glasses/500/500', 'https://picsum.photos/seed/glasses2/500/500'],
+    image: IMAGES['blue-glasses-1'].main,
+    images: [
+      IMAGES['blue-glasses-1'].main,
+      IMAGES['blue-glasses-1'].alt1,
+      IMAGES['blue-glasses-1'].alt2,
+    ],
     rating: 4.5,
     reviewCount: 415,
     shortSolution: 'Reduces digital eye strain and protects sleep hormones.',
@@ -319,6 +585,11 @@ export const products = [
     tags: ['Health', 'Wearable', 'Eyewear'],
     category: 'Wellness',
     solvesProblemIds: ['poor-sleep', 'cant-focus'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Optic Blue Light Blocking Glasses')}`, price: 2018 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Optic Blue Light Blocking Glasses')}`, price: 2006 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Optic Blue Light Blocking Glasses')}`, price: 2092 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -328,15 +599,24 @@ export const products = [
     name: 'FrostBite Laptop Cooling Pad',
     price: 2299,
     originalPrice: 2999,
-    image: 'https://picsum.photos/seed/coolingpad/500/500',
-    images: ['https://picsum.photos/seed/coolingpad/500/500', 'https://picsum.photos/seed/coolingpad2/500/500'],
+    image: IMAGES['laptop-cooling-1'].main,
+    images: [
+      IMAGES['laptop-cooling-1'].main,
+      IMAGES['laptop-cooling-1'].alt1,
+      IMAGES['laptop-cooling-1'].alt2,
+    ],
     rating: 4.3,
     reviewCount: 275,
     shortSolution: 'Actively cools laptop with silent RGB fans.',
-    description: 'A slim cooling pad featuring 3 whisper-quiet high-velocity fans. Draws heat away from the bottom of your laptop to prevent thermal throttling during heavy workloads or gaming. Features subtle RGB edge lighting.',
+    description: 'A slim cooling pad featuring 3 whisper-quiet high-velocity fans. Draws heat away from the bottom of your laptop to prevent thermal throttling during heavy workloads or gaming.',
     tags: ['Cooling', 'Tech', 'RGB'],
     category: 'Desk Setup',
     solvesProblemIds: ['hot-laptop'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('FrostBite Laptop Cooling Pad')}`, price: 2341 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('FrostBite Laptop Cooling Pad')}`, price: 2319 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('FrostBite Laptop Cooling Pad')}`, price: 2310 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: 'Sale'
@@ -346,8 +626,12 @@ export const products = [
     name: 'Modular Drawer Organizer Trays',
     price: 1499,
     originalPrice: 1899,
-    image: 'https://picsum.photos/seed/drawertray/500/500',
-    images: ['https://picsum.photos/seed/drawertray/500/500', 'https://picsum.photos/seed/drawertray2/500/500'],
+    image: IMAGES['drawer-org-1'].main,
+    images: [
+      IMAGES['drawer-org-1'].main,
+      IMAGES['drawer-org-1'].alt1,
+      IMAGES['drawer-org-1'].alt2,
+    ],
     rating: 4.6,
     reviewCount: 150,
     shortSolution: 'Customizable compartments for hidden desk storage.',
@@ -355,6 +639,11 @@ export const products = [
     tags: ['Organization', 'Storage', 'Modular'],
     category: 'Desk Setup',
     solvesProblemIds: ['messy-desk', 'losing-items'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Modular Drawer Organizer Trays')}`, price: 1521 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Modular Drawer Organizer Trays')}`, price: 1510 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Modular Drawer Organizer Trays')}`, price: 1535 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -364,8 +653,12 @@ export const products = [
     name: 'Halo Ring Light for Monitors',
     price: 2499,
     originalPrice: 2999,
-    image: 'https://picsum.photos/seed/ringlight/500/500',
-    images: ['https://picsum.photos/seed/ringlight/500/500', 'https://picsum.photos/seed/ringlight2/500/500'],
+    image: IMAGES['webcam-light-1'].main,
+    images: [
+      IMAGES['webcam-light-1'].main,
+      IMAGES['webcam-light-1'].alt1,
+      IMAGES['webcam-light-1'].alt2,
+    ],
     rating: 4.7,
     reviewCount: 380,
     shortSolution: 'Provides soft, even lighting for professional video calls.',
@@ -373,6 +666,11 @@ export const products = [
     tags: ['Lighting', 'Video', 'Tech'],
     category: 'Lighting',
     solvesProblemIds: ['bad-lighting'],
+    externalLinks: [
+      { platform: 'Amazon', url: `https://www.amazon.in/s?k=${encodeURIComponent('Halo Ring Light for Monitors')}`, price: 2549 },
+      { platform: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent('Halo Ring Light for Monitors')}`, price: 2504 },
+      { platform: 'Croma', url: `https://www.croma.com/searchB?q=${encodeURIComponent('Halo Ring Light for Monitors')}`, price: 2545 }
+    ],
     inStock: true,
     isFeatured: false,
     badge: null
@@ -397,7 +695,10 @@ export const aiBundles = [
     description: 'Everything you need to stop neck and back pain at your desk.',
     price: 3599,
     originalPrice: 4998,
-    items: [products.find(p => p.id === 'monitor-riser-1'), products.find(p => p.id === 'posture-1')]
+    items: [
+      products.find(p => p.id === 'monitor-riser-1'),
+      products.find(p => p.id === 'posture-1')
+    ]
   },
   {
     id: 'focus-bundle',
@@ -405,7 +706,10 @@ export const aiBundles = [
     description: 'Block out the world and find your flow state instantly.',
     price: 6999,
     originalPrice: 7998,
-    items: [products.find(p => p.id === 'noise-earbuds-1'), products.find(p => p.id === 'fidget-cube-1')]
+    items: [
+      products.find(p => p.id === 'noise-earbuds-1'),
+      products.find(p => p.id === 'fidget-cube-1')
+    ]
   }
 ];
 

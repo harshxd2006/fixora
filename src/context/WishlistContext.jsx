@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 import { supabase } from '../services/supabase';
 import { useAuth } from '../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 export const WishlistContext = createContext();
 
@@ -95,6 +96,7 @@ export const WishlistProvider = ({ children }) => {
     // Optimistic update
     if (!wishlistIds.includes(productId)) {
       setWishlistIds(prev => [...prev, productId]);
+      toast.success('Added to wishlist');
     }
 
     if (isAuthenticated && user) {
@@ -114,6 +116,7 @@ export const WishlistProvider = ({ children }) => {
   const removeFromWishlist = async (productId) => {
     // Optimistic update
     setWishlistIds(prev => prev.filter(id => id !== productId));
+    toast.success('Removed from wishlist');
 
     if (isAuthenticated && user) {
       // Delete from Supabase

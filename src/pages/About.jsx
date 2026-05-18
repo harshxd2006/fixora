@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Target, Users, Zap, ShieldCheck } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import SectionHeading from '../components/SectionHeading';
 
 const About = () => {
@@ -10,6 +11,10 @@ const About = () => {
       exit={{ opacity: 0 }}
       className="pt-12 pb-24 bg-warm-white min-h-screen"
     >
+      <Helmet>
+        <title>About Us - Fixora</title>
+        <meta name="description" content="Fixora isn't just another store. We are a problem-first platform designed to cure your daily frustrations with AI-curated solutions." />
+      </Helmet>
       {/* Hero Section */}
       <section className="px-6 py-16 md:py-24 text-center border-b border-border-light bg-white">
         <div className="container mx-auto max-w-4xl">

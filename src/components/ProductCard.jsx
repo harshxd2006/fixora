@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { Heart, Star, Tag } from 'lucide-react';
 import { useWishlist } from '../hooks/useWishlist';
 import { formatINR, getDiscount } from '../utils/formatPrice';
+import { useCart } from '../context/CartContext';
 
 const ProductCard = ({ product }) => {
   const { isWishlisted, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
   const favorite = isWishlisted(product.id);
 
   const toggleWishlist = (e) => {
@@ -25,14 +27,17 @@ const ProductCard = ({ product }) => {
       whileHover={{ y: -4 }}
       className="card flex flex-col h-full overflow-hidden"
     >
-      <div className="bg-warm-white h-[220px] p-5 relative group">
+      <div className="bg-gray-50 h-[220px] relative group overflow-hidden rounded-t-[20px]">
         <Link to={`/products/${product.id}`} className="block w-full h-full">
           <motion.img 
             whileHover={{ y: [-4, 4, -4] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             src={product.image} 
             alt={product.name} 
-            className="w-full h-full object-contain mix-blend-multiply"
+            className="w-full h-full object-cover rounded-xl"
+            onError={(e) => {
+              e.target.src = 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop';
+            }}
           />
         </Link>
         
@@ -112,6 +117,11 @@ const ProductCard = ({ product }) => {
             Details
           </Link>
           <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCart(product);
+            }}
             className="flex-1 bg-ink text-white h-10 rounded-full flex items-center justify-center text-[14px] font-semibold hover:bg-[#1a1a1a] hover:shadow-card transition-all active:scale-[0.97]"
           >
             Buy Now

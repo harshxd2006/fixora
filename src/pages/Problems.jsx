@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, X, Zap } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import ProblemCard from '../components/ProblemCard';
 import SearchBar from '../components/SearchBar';
 import SectionHeading from '../components/SectionHeading';
@@ -22,6 +23,10 @@ const Problems = () => {
       exit={{ opacity: 0, y: -20 }}
       className="pt-12 pb-24 px-6 min-h-screen bg-warm-white"
     >
+      <Helmet>
+        <title>Browse Problems - Fixora</title>
+        <meta name="description" content="Search by symptoms, annoyances, or daily frustrations. Our AI will match you with the perfect solutions." />
+      </Helmet>
       <div className="container mx-auto max-w-7xl">
         
         {/* Header Section */}

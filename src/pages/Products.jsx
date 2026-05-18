@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, Search } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import ProductCard from '../components/ProductCard';
 import SectionHeading from '../components/SectionHeading';
 import { products, productCategories } from '../data/products';
@@ -25,6 +26,10 @@ const Products = () => {
       exit={{ opacity: 0, y: -20 }}
       className="pt-12 pb-24 px-6 min-h-screen bg-warm-white"
     >
+      <Helmet>
+        <title>All Products - Fixora</title>
+        <meta name="description" content="Browse our curated collection of problem-solving products. High quality, tested, and guaranteed to work." />
+      </Helmet>
       <div className="container mx-auto max-w-7xl">
         
         {/* Header Section */}

@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Search, Sparkles, Package, ArrowRight } from 'lucide-react';
 import Hero from '../components/Hero';
 import SectionHeading from '../components/SectionHeading';
@@ -37,6 +38,11 @@ const Home = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
+      <Helmet>
+        <title>Fixora – Stop Suffering, Start Fixing</title>
+        <meta name="description" content="AI-powered problem-solving e-commerce platform." />
+      </Helmet>
+      
       <Hero />
 
       {/* MARQUEE STRIP */}
