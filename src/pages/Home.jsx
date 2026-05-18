@@ -3,7 +3,7 @@ import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Search, Sparkles, Package, ArrowRight } from 'lucide-react';
-import Hero from '../components/Hero';
+import Hero3DSection from '../components/Hero3DSection';
 import SectionHeading from '../components/SectionHeading';
 import ProblemCard from '../components/ProblemCard';
 import ProductCard from '../components/ProductCard';
@@ -43,7 +43,7 @@ const Home = () => {
         <meta name="description" content="AI-powered problem-solving e-commerce platform." />
       </Helmet>
       
-      <Hero />
+      <Hero3DSection />
 
       {/* MARQUEE STRIP */}
       <div className="w-full bg-ink h-12 overflow-hidden flex items-center relative whitespace-nowrap">
