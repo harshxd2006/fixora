@@ -224,11 +224,8 @@ export default function Intro() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_top,#ffffff_0%,#F7F7F2_45%,#EAEAE0_100%)] text-ink">
-        {/* Mobile static gradient */}
-        <div className="md:hidden absolute inset-0 z-0 bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#0A0A0A]" />
-        
-        {/* Desktop 3D Canvas */}
-        <div className="hidden md:block absolute inset-0 z-0">
+        {/* 3D Canvas */}
+        <div className="absolute inset-0 z-0">
           <Canvas
             shadows
             dpr={[1, 1.2]}
@@ -290,17 +287,17 @@ export default function Intro() {
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, ease: animEase }}
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-border-light bg-white/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-muted shadow-sm backdrop-blur-md md:bg-white/70 bg-[#1a1a1a]/80 md:text-slate-muted text-gray-300 md:border-border-light border-white/10"
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-border-light bg-white/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-muted shadow-sm backdrop-blur-md"
             >
               <span className="h-2 w-2 rounded-full bg-lime" />
               Problem-First Shopping
             </motion.div>
 
-            <h1 className="max-w-3xl text-[44px] sm:text-6xl md:text-7xl lg:text-[84px] font-extrabold leading-[0.92] tracking-[-0.03em] md:text-ink text-white">
+            <h1 className="max-w-3xl text-[44px] sm:text-6xl md:text-7xl lg:text-[84px] font-extrabold leading-[0.92] tracking-[-0.03em] text-ink">
               <div>
                 {['Stop', 'Suffering.'].map((w, i) => renderHeadlineWord(w, i, 0))}
               </div>
-              <div className="md:bg-gradient-to-r md:from-ink md:via-[#4a4a4a] md:to-slate-muted bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent">
+              <div className="bg-gradient-to-r from-ink via-[#4a4a4a] to-slate-muted bg-clip-text text-transparent">
                 {['Start', 'Fixing.'].map((w, i) => renderHeadlineWord(w, i, 2))}
               </div>
             </h1>
@@ -309,7 +306,7 @@ export default function Intro() {
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4, ease: animEase }}
-              className="mt-7 max-w-xl text-base leading-7 md:text-slate-muted text-gray-400 font-medium sm:text-lg"
+              className="mt-7 max-w-xl text-base leading-7 text-slate-muted font-medium sm:text-lg"
             >
               Tell us what's broken in your daily workflow. Our AI instantly curates the perfect premium tools to eliminate the annoyance—permanently.
             </motion.p>
@@ -336,7 +333,7 @@ export default function Intro() {
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
         >
-          <ChevronDown color="white" size={28} className="md:text-ink" style={{ stroke: 'currentColor' }} />
+          <ChevronDown size={28} className="text-ink" style={{ stroke: 'currentColor' }} />
         </motion.div>
       </section>
 
