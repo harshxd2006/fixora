@@ -17,17 +17,67 @@ export const getRandomItems = (arr, n) => {
   return shuffled.slice(0, n);
 };
 
-export const matchQuery = (query, list, keys = ['title', 'tags', 'shortDesc']) => {
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+export const matchQuery = async (query, list, keys = ['title', 'tags', 'shortDesc']) => {
   if (!query) return list;
-  const lowerQuery = query.toLowerCase();
   
-  return list.filter(item => {
-    return keys.some(key => {
-      const val = item[key];
-      if (Array.isArray(val)) {
-        return val.some(v => v.toLowerCase().includes(lowerQuery));
-      }
-      return val && val.toLowerCase().includes(lowerQuery);
+  try {
+    const itemList = list.map((item, idx) => {
+      let desc = `Index: ${idx}`;
+      keys.forEach(k => {
+        if (item[k]) desc += ` | ${k}: ${Array.isArray(item[k]) ? item[k].join(', ') : item[k]}`;
+      });
+      return desc;
+    }).join('\n');
+    
+    const prompt = `A user is searching for: "${query}"
+
+Here is a list of items:
+${itemList}
+
+Rank the top most relevant items based on semantic similarity to the query.
+Return ONLY a JSON array of the matching indices (integers).
+Example: [2, 0, 5]`;
+
+    const response = await fetch(GROQ_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'llama-3.1-8b-instant',
+        max_tokens: 300,
+        temperature: 0.3,
+        messages: [{ role: 'user', content: prompt }]
+      })
     });
-  });
+
+    if (!response.ok) throw new Error('API error');
+    
+    const data = await response.json();
+    const cleaned = data.choices[0].message.content.replace(/```json|```/g, '').trim();
+    const indices = JSON.parse(cleaned);
+    
+    return indices.map(idx => {
+      const item = list[idx];
+      if (item) return { ...item, searchTerm: query };
+      return null;
+    }).filter(Boolean);
+  } catch (err) {
+    console.error('Semantic search failed, falling back to string match', err);
+    const lowerQuery = query.toLowerCase();
+    
+    return list.filter(item => {
+      return keys.some(key => {
+        const val = item[key];
+        if (Array.isArray(val)) {
+          return val.some(v => v.toLowerCase().includes(lowerQuery));
+        }
+        return val && typeof val === 'string' && val.toLowerCase().includes(lowerQuery);
+      });
+    }).map(item => ({ ...item, searchTerm: query }));
+  }
 };

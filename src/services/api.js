@@ -2,6 +2,7 @@ import { problems } from '../data/problems';
 import { products } from '../data/products';
 import { categories } from '../data/categories';
 import { matchQuery } from '../utils/helpers';
+import { semanticSearchProblems } from './ai';
 
 // Mock API calls to simulate backend data fetching
 // In a real app, these would query Supabase
@@ -17,21 +18,20 @@ export const getProblemById = async (id) => {
 };
 
 export const getProducts = async (filters = {}) => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      let result = [...products];
-      if (filters.category) {
-        result = result.filter(p => p.category === filters.category);
-      }
-      if (filters.query) {
-        result = matchQuery(filters.query, result, ['name', 'description', 'tags']);
-      }
-      if (filters.featured) {
-        result = result.filter(p => p.isFeatured);
-      }
-      resolve(result);
-    }, 500);
-  });
+  let result = [...products];
+  if (filters.category) {
+    result = result.filter(p => p.category === filters.category);
+  }
+  if (filters.query) {
+    result = await matchQuery(filters.query, result, ['name', 'description', 'tags']);
+  }
+  if (filters.featured) {
+    result = result.filter(p => p.isFeatured);
+  }
+  
+  // Keep delay to simulate network
+  await new Promise(r => setTimeout(r, 500));
+  return result;
 };
 
 export const getProductById = async (id) => {
@@ -45,9 +45,7 @@ export const getCategories = async () => {
 };
 
 export const searchProblems = async (query) => {
-  return new Promise(resolve => {
-    setTimeout(() => resolve(matchQuery(query, problems)), 300);
-  });
+  return await semanticSearchProblems(query, problems);
 };
 
 // Wishlist mock API (uses localStorage for demo purposes)

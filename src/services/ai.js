@@ -78,6 +78,41 @@ Example: ["messy-desk", "tangled-cables", "bad-posture"]`;
   }
 };
 
+// Feature 2.1: Advanced semantic search for problems
+export const semanticSearchProblems = async (query, problems) => {
+  try {
+    const problemList = problems.map(p => `ID: ${p.id} | Title: ${p.title} | Tags: ${p.tags?.join(', ')}`).join('\n');
+    
+    const prompt = `A user is searching for: "${query}"
+
+Here are the available problems:
+${problemList}
+
+Rank the top 4 most relevant problems based on semantic similarity to the query.
+Return ONLY a JSON array of objects, where each object has "id" and "matchScore" (a float between 0 and 1).
+Example:
+[
+  { "id": "messy-desk", "matchScore": 0.95 },
+  { "id": "tangled-cables", "matchScore": 0.82 },
+  { "id": "bad-posture", "matchScore": 0.65 },
+  { "id": "losing-items", "matchScore": 0.40 }
+]`;
+
+    const result = await callGroq(prompt);
+    const cleaned = result.replace(/```json|```/g, '').trim();
+    const matches = JSON.parse(cleaned);
+    
+    return matches.map(match => {
+      const problem = problems.find(p => p.id === match.id);
+      return problem ? { ...problem, matchScore: match.matchScore } : null;
+    }).filter(Boolean);
+  } catch (error) {
+    console.error('AI semantic search error:', error);
+    // fallback logic
+    return problems.slice(0, 4).map((p, i) => ({ ...p, matchScore: 0.9 - (i * 0.1) }));
+  }
+};
+
 // Feature 3: Generate a personalized product recommendation reason
 export const getProductRecommendationReason = async (problemTitle, productName) => {
   try {

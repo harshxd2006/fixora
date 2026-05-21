@@ -1,22 +1,63 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, Search } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import ProductCard from '../components/ProductCard';
 import SectionHeading from '../components/SectionHeading';
-import { products, productCategories } from '../data/products';
+import { productCategories } from '../data/products';
+import { getProducts } from '../services/api';
 
 const Products = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredProducts = useMemo(() => {
-    return products.filter(p => {
-      const matchesCategory = activeCategory === 'All' || p.category === activeCategory;
-      const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            p.shortSolution.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
+  // Fetch recommended products on mount
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      const saved = JSON.parse(localStorage.getItem('fixora_recent_searches') || '[]');
+      const lastThree = saved.slice(0, 3);
+      if (lastThree.length > 0) {
+        const combinedQuery = lastThree.join(' ');
+        const results = await getProducts({ query: combinedQuery });
+        // We only want to show a few recommended
+        setRecommendedProducts(results.slice(0, 4));
+      }
+    };
+    fetchRecommended();
+  }, []);
+
+  // Fetch filtered products & save search
+  useEffect(() => {
+    let active = true;
+    const timer = setTimeout(async () => {
+      setIsLoading(true);
+      
+      // Save search query if valid
+      if (searchQuery.trim().length >= 2) {
+        const saved = JSON.parse(localStorage.getItem('fixora_recent_searches') || '[]');
+        const q = searchQuery.trim();
+        const updated = [q, ...saved.filter(item => item !== q)].slice(0, 5);
+        localStorage.setItem('fixora_recent_searches', JSON.stringify(updated));
+      }
+
+      const results = await getProducts({ 
+        category: activeCategory === 'All' ? null : activeCategory,
+        query: searchQuery.trim() || null
+      });
+      
+      if (active) {
+        setFilteredProducts(results);
+        setIsLoading(false);
+      }
+    }, 400);
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
   }, [activeCategory, searchQuery]);
 
   return (
@@ -40,6 +81,25 @@ const Products = () => {
             subtitle="Browse our curated collection of problem-solving products. High quality, tested, and guaranteed to work."
           />
         </div>
+
+        {/* Recommended For You */}
+        {recommendedProducts.length > 0 && !searchQuery && activeCategory === 'All' && (
+          <div className="mb-16">
+            <h3 className="text-[20px] font-bold text-ink mb-6">Recommended for You</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {recommendedProducts.map((product, i) => (
+                <motion.div
+                  key={`rec-${product.id}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Controls Row */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 mt-12 border-b border-border-light pb-6">
@@ -90,29 +150,37 @@ const Products = () => {
         </div>
 
         {/* Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={`${activeCategory}-${searchQuery}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {filteredProducts.map((product, i) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-              >
-                <ProductCard product={product} />
-              </motion.div>
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="animate-pulse bg-white rounded-[20px] h-[400px] border border-border-light"></div>
             ))}
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        ) : (
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={`${activeCategory}-${searchQuery}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            >
+              {filteredProducts.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        )}
 
-        {filteredProducts.length === 0 && (
+        {!isLoading && filteredProducts.length === 0 && (
           <div className="text-center py-20 bg-white border border-border-light rounded-[24px] shadow-sm">
             <Search size={48} className="mx-auto text-border-light mb-4" />
             <h3 className="text-[18px] font-semibold text-ink mb-2">No products found</h3>

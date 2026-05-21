@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, Star, ShoppingBag, Truck, RotateCcw, ShieldCheck, Check } from 'lucide-react';
@@ -8,6 +8,7 @@ import { useCart } from '../context/CartContext';
 import { formatINR, getDiscount } from '../utils/formatPrice';
 import NotFound from '../components/NotFound';
 import CTAButton from '../components/CTAButton';
+import { getLivePrices } from '../services/priceService';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -22,6 +23,20 @@ const ProductDetail = () => {
   
   const [activeImage, setActiveImage] = useState(0);
   const images = [product.image, `https://picsum.photos/seed/${product.id}b/600/600`, `https://picsum.photos/seed/${product.id}c/600/600`];
+
+  const [loadingPrices, setLoadingPrices] = useState(true);
+  const [platformPrices, setPlatformPrices] = useState(null);
+
+  useEffect(() => {
+    if (product) {
+      setLoadingPrices(true);
+      const prices = getLivePrices(product.id, product.price);
+      setPlatformPrices(prices);
+      setTimeout(() => {
+        setLoadingPrices(false);
+      }, 150);
+    }
+  }, [product]);
 
   const toggleWishlist = () => {
     if (favorite) {
@@ -188,54 +203,64 @@ const ProductDetail = () => {
               </div>
 
               {/* External Purchase Options */}
-              {product.externalLinks && product.externalLinks.length > 0 ? (
-                <div className="pt-6 border-t border-border-light mb-10">
-                  <h3 className="text-[13px] font-semibold text-ink uppercase tracking-wider mb-4">Available on other platforms</h3>
+              <div className="pt-6 border-t border-border-light mb-10">
+                <h3 className="text-[13px] font-semibold text-ink uppercase tracking-wider mb-4">Available on other platforms</h3>
+                
+                {loadingPrices || !platformPrices ? (
                   <div className="flex flex-col gap-3">
-                    {product.externalLinks.map((link, idx) => (
-                      <a 
-                        key={idx}
-                        href={link.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center justify-between p-4 bg-white border border-border-light rounded-xl hover:border-ink hover:shadow-sm transition-all group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="font-bold text-ink group-hover:text-lime transition-colors">{link.platform}</span>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <span className="font-semibold text-ink">{formatINR(link.price)}</span>
-                          <div className="text-[12px] font-bold text-ink px-3 py-1.5 bg-soft-white rounded-full group-hover:bg-ink group-hover:text-white transition-colors">
-                            View Deal
-                          </div>
-                        </div>
-                      </a>
+                    {[1, 2, 3].map(i => (
+                      <div key={i} className="h-[74px] bg-white border border-border-light rounded-xl animate-pulse flex items-center justify-between p-4">
+                        <div className="w-24 h-5 bg-gray-200 rounded"></div>
+                        <div className="w-20 h-5 bg-gray-200 rounded"></div>
+                      </div>
                     ))}
                   </div>
-                </div>
-              ) : (
-                <div className="pt-6 border-t border-border-light mb-10">
-                  <h3 className="text-[13px] font-semibold text-ink uppercase tracking-wider mb-4">Available on other platforms</h3>
-                  <div className="flex flex-wrap gap-3">
-                    <a 
-                      href={`https://www.amazon.in/s?k=${encodeURIComponent(product.name)}`} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="flex-1 min-w-[140px] h-[48px] bg-white border border-border-light text-ink hover:border-[#FF9900] hover:text-[#FF9900] rounded-xl flex items-center justify-center font-bold transition-all shadow-sm group"
-                    >
-                      Search on Amazon
-                    </a>
-                    <a 
-                      href={`https://www.flipkart.com/search?q=${encodeURIComponent(product.name)}`} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="flex-1 min-w-[140px] h-[48px] bg-white border border-border-light text-ink hover:border-[#2874F0] hover:text-[#2874F0] rounded-xl flex items-center justify-center font-bold transition-all shadow-sm"
-                    >
-                      Search on Flipkart
-                    </a>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {['amazon', 'flipkart', 'croma'].map(platform => {
+                      const platPrice = platformPrices[platform];
+                      const diff = platPrice - product.price;
+                      const diffPercent = Math.abs(Math.round((diff / product.price) * 100));
+                      const isCheaper = diff < 0;
+                      
+                      let url = '#';
+                      const encodedName = encodeURIComponent(product.name);
+                      if (platform === 'amazon') url = `https://www.amazon.in/s?k=${encodedName}`;
+                      else if (platform === 'flipkart') url = `https://www.flipkart.com/search?q=${encodedName}`;
+                      else if (platform === 'croma') url = `https://www.croma.com/searchB?q=${encodedName}%3Arelevance&text=${encodedName}`;
+
+                      return (
+                        <div key={platform} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-border-light rounded-xl hover:border-ink hover:shadow-sm transition-all group gap-2">
+                          <div className="flex items-center gap-3">
+                            <span className="font-bold text-ink group-hover:text-lime transition-colors capitalize">
+                              {platform}
+                            </span>
+                            {diff !== 0 && (
+                              <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${isCheaper ? 'bg-[#DCFCE7] text-[#16A34A]' : 'bg-red-100 text-red-600'}`}>
+                                {isCheaper ? `↓ ${diffPercent}% cheaper` : `↑ ${diffPercent}% higher`}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="font-semibold text-ink">{formatINR(platPrice)}</span>
+                            <a 
+                              href={url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-[12px] font-bold text-ink px-3 py-1.5 bg-soft-white rounded-full group-hover:bg-ink group-hover:text-white transition-colors cursor-pointer"
+                            >
+                              View Deal
+                            </a>
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <div className="text-[11px] text-slate-muted text-center mt-2 font-medium">
+                      Prices updated daily • Last synced: {platformPrices.lastUpdated}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-border-light pt-8">
                 <div className="flex items-center gap-3">

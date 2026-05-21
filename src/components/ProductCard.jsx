@@ -1,14 +1,38 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart, Star, Tag } from 'lucide-react';
 import { useWishlist } from '../hooks/useWishlist';
 import { formatINR, getDiscount } from '../utils/formatPrice';
 import { useCart } from '../context/CartContext';
+import { getLivePrices } from '../services/priceService';
 
 const ProductCard = ({ product }) => {
   const { isWishlisted, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
   const favorite = isWishlisted(product.id);
+  
+  const [lowestPriceInfo, setLowestPriceInfo] = useState(null);
+
+  useEffect(() => {
+    const prices = getLivePrices(product.id, product.price);
+    let minPrice = Infinity;
+    let minPlatform = '';
+    
+    ['amazon', 'flipkart', 'croma'].forEach(platform => {
+      if (prices[platform] < minPrice) {
+        minPrice = prices[platform];
+        minPlatform = platform;
+      }
+    });
+    
+    if (minPrice < Infinity) {
+      setLowestPriceInfo({
+        platform: minPlatform.charAt(0).toUpperCase() + minPlatform.slice(1),
+        price: minPrice
+      });
+    }
+  }, [product.id, product.price]);
 
   const toggleWishlist = (e) => {
     e.preventDefault();
@@ -67,6 +91,12 @@ const ProductCard = ({ product }) => {
             {product.name}
           </h3>
         </Link>
+
+        {product.searchTerm && (
+          <div className="mt-2 inline-block bg-[#E5F785]/30 text-ink text-[11px] font-bold px-2 py-0.5 rounded border border-[#E5F785]/50 w-fit">
+            Best match for: "{product.searchTerm}"
+          </div>
+        )}
         
         <div className="flex items-baseline gap-2 mt-2">
           <span className="text-[20px] font-bold text-ink">{formatINR(product.price)}</span>
@@ -81,6 +111,11 @@ const ProductCard = ({ product }) => {
             </span>
           )}
         </div>
+        {lowestPriceInfo && (
+          <div className="text-[12px] text-slate-muted mt-1 font-medium">
+            Available from {formatINR(lowestPriceInfo.price)} on {lowestPriceInfo.platform}
+          </div>
+        )}
 
         <div className="flex items-center gap-1.5 mt-2">
           <div className="flex gap-0.5">
