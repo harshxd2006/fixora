@@ -87,20 +87,20 @@ const Login = () => {
       </div>
 
       {/* RIGHT PANEL */}
-      <div className="w-full lg:w-1/2 bg-warm-white flex items-center justify-center p-6 sm:p-12">
+      <div className="w-full lg:w-1/2 bg-transparent flex items-center justify-center p-6 sm:p-12 text-white">
         <div className="w-full max-w-[420px]">
           
-          <Link to="/" className="lg:hidden text-[24px] font-extrabold text-ink tracking-tight block w-fit mb-8">
+          <Link to="/" className="lg:hidden text-[24px] font-extrabold text-white tracking-tight block w-fit mb-8">
             Fixora.
           </Link>
 
-          <div className="bg-white border border-border-light rounded-[24px] p-8 sm:p-10 shadow-card">
-            <h1 className="text-[28px] font-bold text-ink tracking-tight mb-2">Welcome back</h1>
-            <p className="text-[14px] text-slate-muted mb-8">Please enter your details to sign in.</p>
+          <div className="glass-card p-8 sm:p-10">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">Welcome back</h1>
+            <p className="text-[14px] text-white/70 mb-8">Please enter your details to sign in.</p>
             
             {error && (
-              <div className="bg-red-50 text-red-600 text-[13px] p-3 rounded-xl mb-6 font-medium border border-red-100 flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-600 mt-1.5 flex-shrink-0"></span>
+              <div className="bg-red-500/20 text-red-300 text-[13px] p-3 rounded-xl mb-6 font-medium border border-red-500/30 flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 flex-shrink-0"></span>
                 {error}
               </div>
             )}
@@ -108,7 +108,7 @@ const Login = () => {
             <button 
               type="button" 
               onClick={handleGoogleLogin}
-              className="w-full h-12 bg-white border border-border-light hover:bg-soft-white rounded-full flex items-center justify-center gap-3 text-[14px] font-medium text-ink transition-colors shadow-sm mb-6"
+              className="w-full h-12 glass-card hover:border-[#E5B268] flex items-center justify-center gap-3 text-[14px] font-semibold text-white transition-colors mb-6"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -120,41 +120,41 @@ const Login = () => {
             </button>
 
             <div className="flex items-center gap-4 mb-6">
-              <div className="flex-1 h-px bg-border-light"></div>
-              <span className="text-[12px] text-[#9E9E98] uppercase tracking-wider">or continue with email</span>
-              <div className="flex-1 h-px bg-border-light"></div>
+              <div className="flex-1 h-px bg-white/15"></div>
+              <span className="text-[11px] text-white/50 uppercase tracking-wider">or continue with email</span>
+              <div className="flex-1 h-px bg-white/15"></div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-[13px] font-semibold text-ink">Email</label>
+                <label className="text-[12px] font-semibold text-[#E5B268] uppercase tracking-wider">Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9E9E98]" size={18} />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50" size={18} />
                   <input 
                     type="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     placeholder="name@example.com"
-                    className="w-full h-12 bg-warm-white border border-border-light focus:bg-white focus:border-ink rounded-xl pl-10 pr-4 text-[15px] outline-none transition-all placeholder:text-[#9E9E98]"
+                    className="w-full h-12 glass-input pl-10"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <label className="text-[13px] font-semibold text-ink">Password</label>
-                  <a href="#" className="text-[13px] text-slate-muted hover:text-ink transition-colors">Forgot?</a>
+                  <label className="text-[12px] font-semibold text-[#E5B268] uppercase tracking-wider">Password</label>
+                  <a href="#" className="text-[12px] text-white/70 hover:text-[#E5B268] transition-colors">Forgot?</a>
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9E9E98]" size={18} />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50" size={18} />
                   <input 
                     type="password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="••••••••"
-                    className="w-full h-12 bg-warm-white border border-border-light focus:bg-white focus:border-ink rounded-xl pl-10 pr-4 text-[15px] outline-none transition-all placeholder:text-[#9E9E98]"
+                    className="w-full h-12 glass-input pl-10"
                   />
                 </div>
               </div>
@@ -162,15 +162,15 @@ const Login = () => {
               <button 
                 type="submit" 
                 disabled={loading}
-                className="w-full h-12 bg-ink text-white rounded-full font-semibold text-[15px] hover:bg-[#1a1a1a] transition-colors mt-6 flex items-center justify-center disabled:opacity-70"
+                className="btn-primary w-full h-12 mt-6 flex items-center justify-center disabled:opacity-70"
               >
                 {loading ? <Loader2 size={18} className="animate-spin" /> : "Sign In"}
               </button>
             </form>
 
-            <p className="text-center text-[14px] text-slate-muted mt-8">
+            <p className="text-center text-[14px] text-white/70 mt-8">
               Don't have an account?{' '}
-              <Link to="/signup" className="text-ink font-semibold hover:underline">
+              <Link to="/signup" className="text-[#E5B268] font-semibold hover:underline">
                 Sign up
               </Link>
             </p>

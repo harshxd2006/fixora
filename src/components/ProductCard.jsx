@@ -53,14 +53,12 @@ const ProductCard = ({ product }) => {
     >
       <div className="bg-black/30 h-[220px] relative group overflow-hidden rounded-t-[20px]">
         <Link to={`/products/${product.id}`} className="block w-full h-full">
-          <motion.img 
-            whileHover={{ y: [-4, 4, -4] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          <img 
             src={product.image} 
             alt={product.name} 
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover rounded-xl opacity-90 group-hover:opacity-100 transition-opacity"
+            className="w-full h-full object-cover rounded-xl opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 ease-out"
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&h=500&fit=crop';
             }}

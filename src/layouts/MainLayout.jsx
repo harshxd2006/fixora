@@ -52,14 +52,14 @@ const MainLayout = () => {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           src="/hero.mp4"
           aria-hidden="true"
-          className="fixed inset-0 w-full h-full object-cover pointer-events-none opacity-40 transform-gpu"
+          className="fixed inset-0 w-full h-full object-cover pointer-events-none opacity-55 sm:opacity-40 transform-gpu"
         >
           <source src="/hero.mp4" type="video/mp4" />
         </video>
-        <div className="fixed inset-0 z-10 bg-gradient-to-b from-[#0A0A0A]/90 via-[#0A0A0A]/80 to-[#0A0A0A]/95 pointer-events-none" />
+        <div className="fixed inset-0 z-10 bg-gradient-to-b from-[#0A0A0A]/75 via-[#0A0A0A]/60 to-[#0A0A0A]/85 pointer-events-none" />
       </div>
 
       <Navbar />

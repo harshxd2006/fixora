@@ -22,14 +22,28 @@ const Hero = () => {
   const handleLoadedMetadata = () => {
     if (videoRef.current) {
       setDuration(videoRef.current.duration || 0);
-      videoRef.current.pause();
+      // Initialize playback asynchronously to ensure mobile browsers prime the video decoder
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          if (videoRef.current) {
+            videoRef.current.pause();
+          }
+        }).catch(() => {});
+      }
     }
   };
 
   useEffect(() => {
-    if (videoRef.current && videoRef.current.duration) {
-      setDuration(videoRef.current.duration);
-      videoRef.current.pause();
+    if (videoRef.current) {
+      if (videoRef.current.duration) {
+        setDuration(videoRef.current.duration);
+      }
+      videoRef.current.play().then(() => {
+        if (videoRef.current) {
+          videoRef.current.pause();
+        }
+      }).catch(() => {});
     }
   }, []);
 
@@ -109,13 +123,15 @@ const Hero = () => {
 
   return (
     <section className="relative w-full min-h-[85vh] sm:min-h-[90vh] lg:min-h-screen -mt-20 sm:-mt-24 pt-20 sm:pt-24 flex items-center overflow-hidden bg-ink text-white">
-      {/* CINEMATIC VIDEO BACKDROP WITH MOBILE-OPTIMIZED CROP & GPU HARDWARE ACCELERATION */}
+      {/* CINEMATIC VIDEO BACKDROP WITH MOBILE-OPTIMIZED VISIBILITY & GPU HARDWARE ACCELERATION */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none transform-gpu will-change-transform">
         <video
           ref={videoRef}
+          autoPlay
           muted
+          loop
           playsInline
-          preload="metadata"
+          preload="auto"
           onLoadedMetadata={handleLoadedMetadata}
           src="/hero.mp4"
           aria-hidden="true"
@@ -124,9 +140,9 @@ const Hero = () => {
           <source src="/hero.mp4" type="video/mp4" />
         </video>
 
-        {/* MOBILE-TUNED DARK GRADIENT OVERLAY */}
-        <div className="fixed inset-0 z-10 bg-gradient-to-r from-[#0A0A0A]/95 via-[#0A0A0A]/85 sm:via-[#0A0A0A]/60 to-[#0A0A0A]/70 pointer-events-none" />
-        <div className="fixed inset-0 z-10 bg-gradient-to-b from-[#0A0A0A]/85 via-transparent to-[#0A0A0A]/80 pointer-events-none" />
+        {/* HIGH-VISIBILITY MOBILE GRADIENT OVERLAY */}
+        <div className="fixed inset-0 z-10 bg-gradient-to-r from-[#0A0A0A]/75 via-[#0A0A0A]/50 to-[#0A0A0A]/60 pointer-events-none" />
+        <div className="fixed inset-0 z-10 bg-gradient-to-b from-[#0A0A0A]/60 via-transparent to-[#0A0A0A]/70 pointer-events-none" />
       </div>
 
       {/* HERO CONTENT - RESPONSIVE TOUCH & TYPOGRAPHY */}
@@ -143,7 +159,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="mb-4 sm:mb-6 inline-flex items-center gap-2"
           >
-            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#E5B268] flex items-center justify-center text-ink font-black text-[11px] sm:text-xs shadow-[0_0_20px_rgba(229,178,104,0.3)]">
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#E5B268] flex items-center justify-center text-ink font-black text-[11px] sm:text-xs">
               F
             </div>
             <span className="text-[11px] sm:text-xs font-extrabold tracking-widest text-white uppercase">Fixora</span>
@@ -181,7 +197,7 @@ const Hero = () => {
             className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
           >
             <Link to="/problems" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 rounded-full bg-[#E5B268] text-ink font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(229,178,104,0.35)] hover:shadow-[0_0_35px_rgba(229,178,104,0.55)] active:scale-[0.98] transition-all">
+              <button className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 rounded-full bg-[#E5B268] text-ink font-bold text-sm sm:text-base flex items-center justify-center gap-2 hover:brightness-105 active:scale-[0.98] transition-all">
                 Find My Solution <ArrowRight size={18} />
               </button>
             </Link>

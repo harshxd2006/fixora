@@ -7,28 +7,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        'warm-white': '#F5F5F0',
-        'soft-white': '#F0F0EB',
-        'muted-white': '#E8E8E2',
+        'brand-dark': '#0A0A0A',
+        'brand-accent': '#E5B268',
+        'brand-text': '#FFFFFF',
+        'brand-muted': 'rgba(255, 255, 255, 0.70)',
         'lime': '#E5B268',
         'ink': '#0A0A0A',
-        'slate-muted': '#6B6B6B',
-        'border-light': '#E2E2DC',
-        'tag-bg': '#EFEFEA',
-        'tag-text': '#3A3A3A',
-        // keep brand colors if they are still referenced in logic somehow, or maybe safely map them
-        'brand-violet': '#0A0A0A', // Remapping brand colors to ink just in case missed somewhere
-        'brand-indigo': '#0A0A0A',
-        'dark-base': '#F5F5F0',
-        'dark-surface': '#FFFFFF',
+        'slate-muted': 'rgba(255, 255, 255, 0.70)',
+        'border-light': 'rgba(255, 255, 255, 0.15)',
+        'tag-bg': 'rgba(255, 255, 255, 0.10)',
+        'tag-text': 'rgba(255, 255, 255, 0.85)',
+        'warm-white': 'transparent',
+        'soft-white': 'rgba(255, 255, 255, 0.10)',
+        'muted-white': 'rgba(255, 255, 255, 0.15)',
+      },
+      borderRadius: {
+        'card': '24px',
+        'pill': '100px',
+        'icon': '12px',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
       boxShadow: {
-        'card': '0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04)',
-        'card-hover': '0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)',
-        'btn': '0 2px 8px rgba(229, 178, 104, 0.4)',
+        'card': '0 8px 32px rgba(0,0,0,0.25)',
+        'card-hover': '0 12px 40px rgba(0,0,0,0.35)',
+        'btn': '0 0 20px rgba(229, 178, 104, 0.35)',
       },
       animation: {
         'float': 'float 3.5s ease-in-out infinite',

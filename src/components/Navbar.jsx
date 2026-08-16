@@ -146,7 +146,7 @@ const Navbar = () => {
                   <motion.div
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="flex items-center bg-[#E5B268] text-ink rounded-full px-5 py-2 text-sm font-bold shadow-[0_0_15px_rgba(229,178,104,0.3)] hover:brightness-105 transition-all"
+                    className="flex items-center bg-[#E5B268] text-ink rounded-full px-5 py-2 text-sm font-bold hover:brightness-105 transition-all"
                   >
                     Sign In
                   </motion.div>

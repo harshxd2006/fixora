@@ -82,47 +82,44 @@ const Home = () => {
             <div className="hidden md:block absolute top-1/2 left-20 right-20 h-px border-t-2 border-dashed border-white/20 -translate-y-1/2 z-0"></div>
             
             <motion.div 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6 }}
-              className="bg-white/10 backdrop-blur-lg border border-white/15 rounded-[20px] p-8 relative z-10 hover:-translate-y-2 transition-transform duration-300"
+              transition={{ duration: 0.5 }}
+              className="glass-card p-8 relative z-10 hover:border-[#E5B268]/50 transition-colors"
             >
-              <div className="text-[64px] font-extrabold text-white/10 absolute top-6 right-8 leading-none">01</div>
-              <div className="w-14 h-14 bg-[#E5B268] rounded-xl flex items-center justify-center shadow-card mb-6 relative z-10">
-                <Search size={24} className="text-ink" />
+              <div className="w-12 h-12 bg-[#E5B268] rounded-xl flex items-center justify-center mb-6">
+                <Search size={22} className="text-ink" />
               </div>
-              <h3 className="text-[18px] font-semibold text-white mb-2">Describe Your Problem</h3>
+              <h3 className="text-[18px] font-bold text-white mb-2">1. Describe Your Problem</h3>
               <p className="text-[14px] text-white/70 leading-relaxed">Tell us what's bothering you in plain English. No need to know exactly what product you need.</p>
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="bg-white/10 backdrop-blur-lg border border-white/15 rounded-[20px] p-8 relative z-10 hover:-translate-y-2 transition-transform duration-300"
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="glass-card p-8 relative z-10 hover:border-[#E5B268]/50 transition-colors"
             >
-              <div className="text-[64px] font-extrabold text-white/10 absolute top-6 right-8 leading-none">02</div>
-              <div className="w-14 h-14 bg-[#E5B268] rounded-xl flex items-center justify-center shadow-card mb-6 relative z-10">
-                <Sparkles size={24} className="text-ink" />
+              <div className="w-12 h-12 bg-[#E5B268] rounded-xl flex items-center justify-center mb-6">
+                <Sparkles size={22} className="text-ink" />
               </div>
-              <h3 className="text-[18px] font-semibold text-white mb-2">AI Finds Solutions</h3>
+              <h3 className="text-[18px] font-bold text-white mb-2">2. AI Finds Solutions</h3>
               <p className="text-[14px] text-white/70 leading-relaxed">Our AI analyzes your problem and finds the perfect combination of products to solve it permanently.</p>
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-white/10 backdrop-blur-lg border border-white/15 rounded-[20px] p-8 relative z-10 hover:-translate-y-2 transition-transform duration-300"
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="glass-card p-8 relative z-10 hover:border-[#E5B268]/50 transition-colors"
             >
-              <div className="text-[64px] font-extrabold text-white/10 absolute top-6 right-8 leading-none">03</div>
-              <div className="w-14 h-14 bg-[#E5B268] rounded-xl flex items-center justify-center shadow-card mb-6 relative z-10">
-                <Package size={24} className="text-ink" />
+              <div className="w-12 h-12 bg-[#E5B268] rounded-xl flex items-center justify-center mb-6">
+                <Package size={22} className="text-ink" />
               </div>
-              <h3 className="text-[18px] font-semibold text-white mb-2">Get the Right Products</h3>
+              <h3 className="text-[18px] font-bold text-white mb-2">3. Get the Right Products</h3>
               <p className="text-[14px] text-white/70 leading-relaxed">Buy individual items or grab an AI-curated bundle with everything you need at a discount.</p>
             </motion.div>
           </div>

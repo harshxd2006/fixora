@@ -17,15 +17,15 @@ const Wishlist = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="pt-12 pb-24 bg-warm-white min-h-screen"
+      className="pt-12 pb-24 bg-transparent text-white min-h-screen"
     >
       <div className="container mx-auto max-w-7xl px-6">
         
         <div className="flex items-center gap-3 mb-12">
-          <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-            <Heart size={24} className="text-red-500 fill-red-500" />
+          <div className="w-12 h-12 bg-[#E5B268]/20 border border-[#E5B268]/40 rounded-full flex items-center justify-center">
+            <Heart size={24} className="text-[#E5B268] fill-[#E5B268]" />
           </div>
-          <h1 className="text-[32px] md:text-[40px] font-bold text-ink tracking-tight">Your Wishlist</h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Your Wishlist</h1>
         </div>
 
         {loading ? (
@@ -51,13 +51,13 @@ const Wishlist = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white border border-border-light rounded-[24px] p-16 text-center max-w-2xl mx-auto shadow-sm"
+            className="glass-card p-16 text-center max-w-2xl mx-auto"
           >
-            <div className="w-20 h-20 bg-soft-white rounded-full flex items-center justify-center mx-auto mb-6">
-              <Heart size={32} className="text-slate-muted" />
+            <div className="w-20 h-20 glass-card rounded-full flex items-center justify-center mx-auto mb-6">
+              <Heart size={32} className="text-white/40" />
             </div>
-            <h2 className="text-[24px] font-bold text-ink mb-2">Your wishlist is empty</h2>
-            <p className="text-[15px] text-slate-muted mb-8 max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-white mb-2">Your wishlist is empty</h2>
+            <p className="text-base text-white/70 mb-8 max-w-md mx-auto">
               Save items you're interested in by clicking the heart icon on any product.
             </p>
             <Link to="/products" className="inline-block">
