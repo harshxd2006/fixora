@@ -114,25 +114,34 @@ html, body {
     transform: translateY(-2px);
   }
 
-  /* Unified Form Inputs */
+  /* Unified Input Fields & Autofill Override */
   .glass-input {
-    background: rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: #FFFFFF;
-    border-radius: 100px;
-    padding: 10px 20px;
-    font-size: 14px;
+    border-radius: 12px;
+    padding: 0 16px;
     outline: none;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: all 0.2s ease;
   }
-
-  .glass-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-  }
-
   .glass-input:focus {
+    background: rgba(255, 255, 255, 0.12);
     border-color: #E5B268;
-    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Prevent browser light-blue autofill background override */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #FFFFFF !important;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(26, 26, 26, 0.95) inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
   }
 
   .glass-nav {

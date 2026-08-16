@@ -16,6 +16,8 @@ const ProductDetail = lazy(() => import('../pages/ProductDetail'));
 const About = lazy(() => import('../pages/About'));
 const Contact = lazy(() => import('../pages/Contact'));
 const Wishlist = lazy(() => import('../pages/Wishlist'));
+const Checkout = lazy(() => import('../pages/Checkout'));
+const OrderConfirmation = lazy(() => import('../pages/OrderConfirmation'));
 const Login = lazy(() => import('../pages/Login'));
 const Signup = lazy(() => import('../pages/Signup'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
@@ -70,6 +72,8 @@ const AppRoutes = () => {
             <Route path="/signup" element={<Signup />} />
             
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route 
               path="/dashboard" 
               element={

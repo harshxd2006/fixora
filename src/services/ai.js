@@ -76,24 +76,31 @@ Example: ["messy-desk", "tangled-cables", "bad-posture"]`;
   }
 };
 
-// Feature 2.1: Advanced semantic search for problems
+import { getProblemRecommendations, extractProblemIntent } from './recommendationEngine';
+
+// Feature 2.1: Advanced semantic search for problems & products
 export const semanticSearchProblems = async (query, problems) => {
   try {
+    const analysis = await getProblemRecommendations(query);
+    if (!analysis.hasMatch) {
+      return [];
+    }
+
     const problemList = problems.map(p => `ID: ${p.id} | Title: ${p.title} | Tags: ${p.tags?.join(', ')}`).join('\n');
     
-    const prompt = `A user is searching for: "${query}"
+    const prompt = `A user described this problem: "${query}"
 
-Here are the available problems:
+Understood needs: ${JSON.stringify(analysis.intent?.needs || [])}
+
+Here are the available Fixora problem categories:
 ${problemList}
 
-Rank the top 4 most relevant problems based on semantic similarity to the query.
-Return ONLY a JSON array of objects, where each object has "id" and "matchScore" (a float between 0 and 1).
+Rank the most relevant problems matching these needs.
+Return ONLY a JSON array of objects with "id" and "matchScore" (a float between 0.40 and 0.98).
 Example:
 [
   { "id": "messy-desk", "matchScore": 0.95 },
-  { "id": "tangled-cables", "matchScore": 0.82 },
-  { "id": "bad-posture", "matchScore": 0.65 },
-  { "id": "losing-items", "matchScore": 0.40 }
+  { "id": "bad-posture", "matchScore": 0.88 }
 ]`;
 
     const result = await callGroq(prompt);
@@ -106,10 +113,18 @@ Example:
     }).filter(Boolean);
   } catch (error) {
     console.error('AI semantic search error:', error);
-    // fallback logic
-    return problems.slice(0, 4).map((p, i) => ({ ...p, matchScore: 0.9 - (i * 0.1) }));
+    // Safe keyword match fallback
+    const lower = (query || '').toLowerCase();
+    return problems.filter(p => 
+      p.title.toLowerCase().includes(lower) || 
+      p.shortDesc.toLowerCase().includes(lower) ||
+      (p.tags && p.tags.some(t => t.toLowerCase().includes(lower)))
+    ).map((p, i) => ({ ...p, matchScore: 0.95 - (i * 0.1) }));
   }
 };
+
+// Export getProblemRecommendations for full catalog search
+export { getProblemRecommendations, extractProblemIntent };
 
 // Feature 3: Generate a personalized product recommendation reason
 export const getProductRecommendationReason = async (problemTitle, productName) => {

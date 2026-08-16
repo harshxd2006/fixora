@@ -19,18 +19,48 @@ export const getProblemById = async (id) => {
 
 export const getProducts = async (filters = {}) => {
   let result = [...products];
-  if (filters.category) {
+
+  // 1. Category Filter
+  if (filters.category && filters.category !== 'All') {
     result = result.filter(p => p.category === filters.category);
   }
-  if (filters.query) {
-    result = await matchQuery(filters.query, result, ['name', 'description', 'tags']);
+
+  // 2. Search Query (Case-insensitive search across name, description, category, and tags)
+  if (filters.query && filters.query.trim()) {
+    const q = filters.query.trim().toLowerCase();
+    result = result.filter(p => 
+      p.name?.toLowerCase().includes(q) ||
+      p.description?.toLowerCase().includes(q) ||
+      p.category?.toLowerCase().includes(q) ||
+      (Array.isArray(p.tags) && p.tags.some(tag => tag.toLowerCase().includes(q))) ||
+      (p.shortSolution && p.shortSolution.toLowerCase().includes(q))
+    );
   }
+
+  // 3. Featured Filter
   if (filters.featured) {
     result = result.filter(p => p.isFeatured);
   }
-  
-  // Keep delay to simulate network
-  await new Promise(r => setTimeout(r, 500));
+
+  // 4. Price Filter
+  if (filters.minPrice !== undefined && filters.minPrice !== null && filters.minPrice > 0) {
+    result = result.filter(p => p.price >= filters.minPrice);
+  }
+  if (filters.maxPrice !== undefined && filters.maxPrice !== null && filters.maxPrice > 0) {
+    result = result.filter(p => p.price <= filters.maxPrice);
+  }
+
+  // 5. Sorting
+  if (filters.sortBy === 'price-asc') {
+    result.sort((a, b) => a.price - b.price);
+  } else if (filters.sortBy === 'price-desc') {
+    result.sort((a, b) => b.price - a.price);
+  } else if (filters.sortBy === 'rating-desc') {
+    result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  }
+
+  // Simulate fast network latency
+  await new Promise(r => setTimeout(r, 150));
   return result;
 };
 

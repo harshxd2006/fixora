@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Package, Heart, Clock, LogOut, Search, User, ChevronRight } from 'lucide-react';
+import { Package, Heart, Clock, LogOut, Search, User, ChevronRight, Loader2, AlertCircle, ShoppingBag, ExternalLink } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useWishlist } from '../hooks/useWishlist';
+import { supabase } from '../services/supabase';
 import { getProductsByIds } from '../data/products';
 import { problems } from '../data/problems';
+import { formatINR } from '../utils/formatPrice';
 import ProductCard from '../components/ProductCard';
 import ProblemCard from '../components/ProblemCard';
 import CTAButton from '../components/CTAButton';
@@ -15,8 +17,39 @@ const Dashboard = () => {
   const { wishlistIds } = useWishlist();
   const navigate = useNavigate();
   
+  const [orders, setOrders] = useState([]);
+  const [loadingOrders, setLoadingOrders] = useState(true);
+  const [ordersError, setOrdersError] = useState(null);
+
   const savedProducts = getProductsByIds(wishlistIds);
-  const recentlyViewed = problems.slice(0, 3); // Mock recent problems
+  const recentlyViewed = problems.slice(0, 3);
+
+  const fetchUserOrders = async () => {
+    if (!user) return;
+    setLoadingOrders(true);
+    setOrdersError(null);
+
+    try {
+      // SECURITY: Efficient single query retrieving ONLY orders belonging to the current user with order_items
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*, order_items(*)')
+        .or(`user_id.eq.${user.id},customer_email.eq.${user.email}`)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setOrders(data || []);
+    } catch (err) {
+      console.error('Error fetching user orders from Supabase:', err);
+      setOrdersError("Couldn't load your orders.");
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserOrders();
+  }, [user]);
 
   const handleLogout = async () => {
     await signOut();
@@ -30,6 +63,11 @@ const Dashboard = () => {
 
   const fullName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'User';
 
+  // Calculate Real Order Statistics from Supabase
+  const totalOrdersCount = orders.length;
+  const activeOrdersCount = orders.filter(o => o.order_status !== 'delivered' && o.order_status !== 'cancelled').length;
+  const completedOrdersCount = orders.filter(o => o.order_status === 'delivered').length;
+
   return (
     <motion.div
       initial={{ opacity: 1 }}
@@ -42,7 +80,7 @@ const Dashboard = () => {
         {/* WELCOME ROW */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div className="flex items-center gap-6">
-            <div className="w-20 h-20 rounded-full glass-card flex items-center justify-center overflow-hidden">
+            <div className="w-20 h-20 rounded-full glass-card flex items-center justify-center overflow-hidden flex-shrink-0">
               {user?.user_metadata?.avatar_url ? (
                 <img src={user.user_metadata.avatar_url} alt="Profile" className="w-full h-full object-cover" />
               ) : (
@@ -53,7 +91,7 @@ const Dashboard = () => {
               <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-1">
                 Hey, {fullName}
               </h1>
-              <p className="text-base text-white/70">Here's what's happening.</p>
+              <p className="text-base text-white/70">Here's what's happening with your Fixora setup.</p>
             </div>
           </div>
           
@@ -64,19 +102,22 @@ const Dashboard = () => {
             <button 
               onClick={handleLogout}
               className="glass-card w-11 h-11 flex items-center justify-center text-white/70 hover:text-red-400 hover:border-red-400/40 transition-colors"
+              title="Log out"
             >
               <LogOut size={18} />
             </button>
           </div>
         </div>
 
-        {/* STATS ROW */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        {/* REAL STATS ROW */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
           <div className="glass-card p-6">
             <div className="w-12 h-12 bg-[#E5B268] rounded-xl flex items-center justify-center mb-6">
               <Package size={24} className="text-ink" />
             </div>
-            <div className="text-[32px] font-extrabold text-white leading-none mb-1">0</div>
+            <div className="text-[32px] font-extrabold text-white leading-none mb-1">
+              {loadingOrders ? '...' : activeOrdersCount}
+            </div>
             <div className="text-[13px] text-white/70 font-semibold uppercase tracking-wider">Active Orders</div>
           </div>
           
@@ -90,11 +131,115 @@ const Dashboard = () => {
 
           <div className="glass-card p-6">
             <div className="w-12 h-12 bg-[#E5B268] rounded-xl flex items-center justify-center mb-6">
-              <Search size={24} className="text-ink" />
+              <ShoppingBag size={24} className="text-ink" />
             </div>
-            <div className="text-[32px] font-extrabold text-white leading-none mb-1">12</div>
-            <div className="text-[13px] text-white/70 font-semibold uppercase tracking-wider">Problems Explored</div>
+            <div className="text-[32px] font-extrabold text-white leading-none mb-1">
+              {loadingOrders ? '...' : totalOrdersCount}
+            </div>
+            <div className="text-[13px] text-white/70 font-semibold uppercase tracking-wider">Total Orders</div>
           </div>
+        </div>
+
+        {/* 1. REAL ORDER HISTORY SECTION */}
+        <div className="mb-16">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+              <Package size={22} className="text-[#E5B268]" /> Order History
+            </h2>
+            {orders.length > 0 && (
+              <span className="text-xs text-[#E5B268] bg-[#E5B268]/15 px-3 py-1 rounded-full border border-[#E5B268]/30 font-semibold">
+                {orders.length} {orders.length === 1 ? 'Order' : 'Orders'}
+              </span>
+            )}
+          </div>
+
+          {/* LOADING STATE */}
+          {loadingOrders ? (
+            <div className="glass-card p-12 text-center text-white/70">
+              <Loader2 size={32} className="animate-spin text-[#E5B268] mx-auto mb-3" />
+              <p className="text-sm">Loading your orders from database...</p>
+            </div>
+          ) : ordersError ? (
+            /* ERROR STATE */
+            <div className="glass-card p-8 text-center text-white">
+              <AlertCircle size={32} className="text-red-400 mx-auto mb-3" />
+              <h3 className="text-lg font-bold text-white mb-2">{ordersError}</h3>
+              <p className="text-xs text-white/70 max-w-md mx-auto mb-6">
+                We couldn't retrieve your order history. Please check your network connection and try again.
+              </p>
+              <button onClick={fetchUserOrders} className="btn-primary">
+                Try Again
+              </button>
+            </div>
+          ) : orders.length === 0 ? (
+            /* EMPTY STATE */
+            <div className="glass-card p-12 text-center">
+              <Package size={36} className="mx-auto text-[#E5B268]/40 mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">No orders yet</h3>
+              <p className="text-sm text-white/70 max-w-md mx-auto mb-6 leading-relaxed">
+                Your Fixora solutions will appear here after you place an order.
+              </p>
+              <Link to="/products">
+                <button className="btn-primary">Explore Solutions</button>
+              </Link>
+            </div>
+          ) : (
+            /* REAL ORDERS LIST */
+            <div className="space-y-4">
+              {orders.map((order) => {
+                const totalUnits = (order.order_items || []).reduce((sum, item) => sum + item.quantity, 0);
+                const formattedDate = new Date(order.created_at).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                });
+
+                return (
+                  <div
+                    key={order.id}
+                    onClick={() => navigate(`/order-confirmation?orderNumber=${encodeURIComponent(order.order_number)}&orderId=${order.id}`)}
+                    className="glass-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 cursor-pointer hover:border-[#E5B268]/50 transition-all group"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3">
+                        <span className="text-lg font-extrabold text-white group-hover:text-[#E5B268] transition-colors">
+                          {order.order_number}
+                        </span>
+                        <span className="text-xs font-semibold text-white/60">
+                          {formattedDate}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-white/70">
+                        <span>
+                          {totalUnits} {totalUnits === 1 ? 'item' : 'items'}
+                        </span>
+                        <span>•</span>
+                        <span className="text-white font-semibold">
+                          {formatINR(order.total_amount)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between md:justify-end gap-4 border-t md:border-t-0 border-white/10 pt-4 md:pt-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#E5B268] bg-[#E5B268]/20 px-3 py-1 rounded-full border border-[#E5B268]/30">
+                          {order.order_status || 'Processing'}
+                        </span>
+                        <span className="text-xs font-bold text-white uppercase bg-white/10 px-2.5 py-1 rounded">
+                          {order.payment_status || 'Pending'}
+                        </span>
+                      </div>
+
+                      <div className="text-white/60 group-hover:text-white transition-colors flex items-center gap-1 text-xs font-semibold">
+                        View Details <ExternalLink size={14} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* WISHLIST PREVIEW */}

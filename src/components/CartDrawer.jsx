@@ -1,11 +1,17 @@
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { formatINR } from '../utils/formatPrice';
-import CTAButton from './CTAButton';
 
 const CartDrawer = ({ isOpen, onClose }) => {
   const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const navigate = useNavigate();
+
+  const handleCheckoutClick = () => {
+    onClose();
+    navigate('/checkout');
+  };
 
   return (
     <AnimatePresence>
@@ -110,7 +116,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 <p className="text-[12px] text-white/60 text-center">
                   Shipping, taxes, and discounts calculated at checkout.
                 </p>
-                <button className="btn-primary w-full h-13 text-base">
+                <button onClick={handleCheckoutClick} className="btn-primary w-full h-13 text-base">
                   Proceed to Checkout
                 </button>
               </div>

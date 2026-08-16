@@ -1,10 +1,35 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
 
 export const CartContext = createContext();
 
+const LOCAL_STORAGE_KEY = 'fixora_cart';
+
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  // Initialize cart state safely from localStorage
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const savedCart = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (savedCart) {
+        const parsed = JSON.parse(savedCart);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing fixora_cart from localStorage:', error);
+    }
+    return [];
+  });
+
+  // Automatically sync cartItems changes to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Error saving fixora_cart to localStorage:', error);
+    }
+  }, [cartItems]);
 
   const addToCart = (product, quantity = 1) => {
     setCartItems(prev => {
@@ -27,7 +52,14 @@ export const CartProvider = ({ children }) => {
     setCartItems(prev => prev.map(i => i.id === productId ? { ...i, quantity } : i));
   };
 
-  const clearCart = () => setCartItems([]);
+  const clearCart = () => {
+    setCartItems([]);
+    try {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    } catch (error) {
+      console.error('Error clearing fixora_cart from localStorage:', error);
+    }
+  };
 
   const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
   const cartTotal = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);

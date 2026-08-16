@@ -62,19 +62,44 @@ const SearchBar = ({
     }
   };
 
+  const handleProblemSubmit = (e) => {
+    if (e) e.preventDefault();
+
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+
+    // Prevent duplicate submissions while searching is active
+    if (isSearching) return;
+
+    setIsOpen(false);
+    navigate(`/problems?search=${encodeURIComponent(trimmedQuery)}`);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleProblemSubmit(e);
+    }
+  };
+
   return (
-    <div className={`relative w-full z-40 ${className}`} ref={containerRef}>
+    <form onSubmit={handleProblemSubmit} className={`relative w-full z-40 ${className}`} ref={containerRef}>
       <div className={`
         relative flex items-center w-full h-12 sm:h-14 glass-card transition-all duration-200
         ${isOpen && query.length > 0 ? 'rounded-b-none border-[#E5B268]/50' : 'hover:border-white/30'}
       `}>
-        <div className="pl-4 flex-shrink-0 text-white/70">
+        <button
+          type="submit"
+          disabled={isSearching || !query.trim()}
+          className="pl-4 flex-shrink-0 text-white/70 hover:text-white transition-colors cursor-pointer disabled:cursor-default"
+          title="Search Problem"
+        >
           {isSearching ? (
             <Loader2 size={18} className="animate-spin text-[#E5B268]" />
           ) : (
             <Search size={18} className={isOpen ? 'text-[#E5B268]' : ''} />
           )}
-        </div>
+        </button>
         
         <input
           ref={inputRef}
@@ -85,12 +110,14 @@ const SearchBar = ({
             setIsOpen(true);
           }}
           onFocus={handleFocus}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder}
           className="w-full h-full bg-transparent border-none outline-none px-3 text-sm text-white placeholder:text-white/50"
         />
         
         {query && (
           <button 
+            type="button"
             onClick={handleClear}
             className="pr-4 flex-shrink-0 text-white/70 hover:text-white transition-colors"
           >
@@ -155,7 +182,7 @@ const SearchBar = ({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </form>
   );
 };
 
