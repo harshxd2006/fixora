@@ -21,7 +21,7 @@ const Problems = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="pt-12 pb-24 px-6 min-h-screen bg-warm-white"
+      className="pt-12 pb-24 px-6 min-h-screen bg-transparent text-white relative z-10"
     >
       <Helmet>
         <title>Browse Problems - Fixora</title>
@@ -35,26 +35,27 @@ const Problems = () => {
             label="BROWSE PROBLEMS" 
             title="Find the fix for what's bothering you."
             subtitle="Search by symptoms, annoyances, or daily frustrations. Our AI will match you with the perfect solutions."
+            dark
           />
           
           <div className="mt-8 relative max-w-xl">
             <SearchBar placeholder="E.g., My back hurts when I sit at my desk..." />
-            <div className="absolute -bottom-8 left-4 text-[12px] font-medium text-slate-muted flex items-center gap-1.5">
-              <Zap size={14} className="text-lime" />
+            <div className="absolute -bottom-8 left-4 text-[12px] font-medium text-white/70 flex items-center gap-1.5">
+              <Zap size={14} className="text-[#E5B268]" />
               AI Semantic Search Enabled
             </div>
           </div>
         </div>
 
         {/* Categories / Filters */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 mt-16 border-b border-border-light pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 mt-16 border-b border-white/10 pb-6">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full hide-scrollbar">
             <button
               onClick={() => setActiveCategory('All')}
               className={`whitespace-nowrap px-4 py-2 rounded-full text-[14px] font-medium transition-colors ${
                 activeCategory === 'All' 
-                  ? 'bg-ink text-white' 
-                  : 'bg-white text-slate-muted border border-border-light hover:border-ink hover:text-ink'
+                  ? 'bg-[#E5B268] text-ink font-bold shadow-sm' 
+                  : 'bg-white/10 text-white/80 border border-white/15 hover:bg-white/20 hover:text-white'
               }`}
             >
               All Problems
@@ -65,8 +66,8 @@ const Problems = () => {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`whitespace-nowrap px-4 py-2 rounded-full text-[14px] font-medium transition-colors ${
                   activeCategory === cat.id 
-                    ? 'bg-ink text-white' 
-                    : 'bg-white text-slate-muted border border-border-light hover:border-ink hover:text-ink'
+                    ? 'bg-[#E5B268] text-ink font-bold shadow-sm' 
+                    : 'bg-white/10 text-white/80 border border-white/15 hover:bg-white/20 hover:text-white'
                 }`}
               >
                 {cat.name}
@@ -76,7 +77,7 @@ const Problems = () => {
 
           <button 
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-white border border-border-light rounded-full text-[14px] font-medium text-ink hover:bg-soft-white transition-colors"
+            className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/15 rounded-full text-[14px] font-medium text-white hover:bg-white/20 transition-colors"
           >
             <Filter size={16} /> Filters
           </button>

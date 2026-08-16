@@ -56,7 +56,7 @@ const AIChatWidget = () => {
             {/* Header */}
             <div className="bg-ink p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-lime rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-[#E5B268] rounded-full flex items-center justify-center">
                   <Sparkles size={16} className="text-ink" />
                 </div>
                 <div>
@@ -109,7 +109,7 @@ const AIChatWidget = () => {
               <button
                 onClick={sendMessage}
                 disabled={!input.trim() || loading}
-                className="w-9 h-9 bg-lime rounded-full flex items-center justify-center disabled:opacity-50 hover:brightness-105 transition-all flex-shrink-0"
+                className="w-9 h-9 bg-[#E5B268] rounded-full flex items-center justify-center disabled:opacity-50 hover:brightness-105 transition-all flex-shrink-0"
               >
                 <Send size={14} className="text-ink" />
               </button>
@@ -138,7 +138,7 @@ const AIChatWidget = () => {
         </AnimatePresence>
         
         {/* Pulse dot */}
-        <span className="absolute top-1 right-1 w-3 h-3 bg-lime rounded-full border-2 border-ink"></span>
+        <span className="absolute top-1 right-1 w-3 h-3 bg-[#E5B268] rounded-full border-2 border-ink"></span>
       </motion.button>
     </div>
   );

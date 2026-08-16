@@ -1,16 +1,14 @@
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_URL = '/api/chat';
 
-// Call Groq API
+// Call Groq API via our backend
 const callGroq = async (prompt, systemPrompt = '') => {
   const response = await fetch(GROQ_URL, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${GROQ_API_KEY}`
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: 'llama-3.1-8b-instant', // updated to the latest working model
+      model: 'llama-3.1-8b-instant',
       max_tokens: 500,
       temperature: 0.7,
       messages: [
@@ -142,8 +140,7 @@ Focus on workspace, productivity, health, and lifestyle problems.`;
     const response = await fetch(GROQ_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',

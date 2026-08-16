@@ -34,7 +34,7 @@ const CTAButton = ({
   const baseStyles = "relative flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 active:scale-[0.97]";
   
   const variants = {
-    primary: "bg-lime text-ink shadow-btn hover:brightness-105 h-[48px] px-8",
+    primary: "bg-[#E5B268] text-ink shadow-btn hover:brightness-105 h-[48px] px-8",
     secondary: "bg-white text-ink border border-border-light hover:bg-soft-white h-[48px] px-8",
     black: "bg-ink text-white hover:bg-[#1a1a1a] shadow-card h-[48px] px-8",
     blackCircle: "bg-ink text-white hover:bg-[#1a1a1a] shadow-card w-[48px] h-[48px] p-0 rounded-full flex items-center justify-center"

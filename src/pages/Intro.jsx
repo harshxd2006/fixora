@@ -14,6 +14,7 @@ import {
 import * as THREE from 'three';
 import { Link } from 'react-router-dom';
 import { ChevronDown, Star } from 'lucide-react';
+import Hero from '../components/Hero';
 
 // Counter component for animated stats
 const AnimatedNumber = ({ value }) => {
@@ -202,7 +203,7 @@ export default function Intro() {
   );
 
   return (
-    <div className="bg-[#0A0A0A] min-h-screen">
+    <div className="bg-transparent min-h-screen">
       {/* Loading Overlay */}
       <AnimatePresence>
         {!isLoaded && (
@@ -223,122 +224,10 @@ export default function Intro() {
       </AnimatePresence>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_top,#ffffff_0%,#F7F7F2_45%,#EAEAE0_100%)] text-ink">
-        {/* 3D Canvas */}
-        <div className="absolute inset-0 z-0">
-          <Canvas
-            shadows
-            dpr={[1, 1.2]}
-            camera={{ position: [0, 1.55, 5.6], fov: 42 }}
-            gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
-          >
-            <color attach="background" args={['#F7F7F2']} />
-            <fog attach="fog" args={['#F7F7F2', 6, 14]} />
-
-            <ambientLight intensity={0.6} />
-            <hemisphereLight intensity={0.4} groundColor="#b9b29f" color="#ffffff" />
-            <directionalLight
-              position={[4, 7, 4]}
-              intensity={1.2}
-              castShadow
-              shadow-mapSize-width={2048}
-              shadow-mapSize-height={2048}
-              shadow-camera-near={0.5}
-              shadow-camera-far={20}
-              shadow-camera-left={-5}
-              shadow-camera-right={5}
-              shadow-camera-top={5}
-              shadow-camera-bottom={-5}
-            />
-            <pointLight position={[-2, 1.5, 2]} intensity={1.8} color="#ccff00" distance={7} />
-            <pointLight position={[2.5, 1.2, -1]} intensity={0.8} color="#ffffff" distance={6} />
-
-            <Suspense fallback={null} onLoad={() => setIsLoaded(true)}>
-              <Environment preset="studio" />
-              <Center>
-                <PremiumDesk />
-              </Center>
-              <ContactShadows
-                position={[0, -0.99, 0]}
-                opacity={0.42}
-                scale={14}
-                blur={2.5}
-                far={3.2}
-                resolution={256}
-                frames={1}
-              />
-            </Suspense>
-
-            <OrbitControls
-              enablePan={false}
-              enableZoom={false}
-              maxPolarAngle={Math.PI / 2.1}
-              minPolarAngle={Math.PI / 4.2}
-              autoRotate
-              autoRotateSpeed={0.45}
-            />
-          </Canvas>
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-6 py-16 sm:px-10 lg:px-12 pointer-events-none">
-          <div className="max-w-2xl pointer-events-auto mt-[-5vh]">
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.6, ease: animEase }}
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-border-light bg-white/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-muted shadow-sm backdrop-blur-md"
-            >
-              <span className="h-2 w-2 rounded-full bg-lime" />
-              Problem-First Shopping
-            </motion.div>
-
-            <h1 className="max-w-3xl text-[44px] sm:text-6xl md:text-7xl lg:text-[84px] font-extrabold leading-[0.92] tracking-[-0.03em] text-ink">
-              <div>
-                {['Stop', 'Suffering.'].map((w, i) => renderHeadlineWord(w, i, 0))}
-              </div>
-              <div className="bg-gradient-to-r from-ink via-[#4a4a4a] to-slate-muted bg-clip-text text-transparent">
-                {['Start', 'Fixing.'].map((w, i) => renderHeadlineWord(w, i, 2))}
-              </div>
-            </h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: animEase }}
-              className="mt-7 max-w-xl text-base leading-7 text-slate-muted font-medium sm:text-lg"
-            >
-              Tell us what's broken in your daily workflow. Our AI instantly curates the perfect premium tools to eliminate the annoyance—permanently.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.5, ease: animEase }}
-              className="mt-6 flex items-center gap-2 text-[13px] text-[#6B6B6B] font-medium"
-            >
-              <Star size={14} className="fill-[#C8F135] text-[#C8F135]" />
-              <span>4.9 rating</span>
-              <span className="w-1 h-1 rounded-full bg-[#6B6B6B]" />
-              <span>10,000+ problems solved</span>
-              <span className="w-1 h-1 rounded-full bg-[#6B6B6B]" />
-              <span>Free AI recommendations</span>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Bouncing Down Arrow */}
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
-        >
-          <ChevronDown size={28} className="text-ink" style={{ stroke: 'currentColor' }} />
-        </motion.div>
-      </section>
+      <Hero />
 
       {/* Scroll Typography Section */}
-      <section ref={containerRef} className="h-[500vh] bg-[#0A0A0A] relative">
+      <section ref={containerRef} className="h-[500vh] bg-transparent relative z-10">
         <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden px-6">
           {phrases.map((phrase, i) => {
             const start = i * 0.2;
@@ -369,11 +258,11 @@ export default function Intro() {
                 style={{ opacity, scale }}
                 className="absolute text-center max-w-[800px] w-full"
               >
-                <h2 className="text-[42px] md:text-[80px] font-extrabold text-white tracking-tight leading-[1.1]">
+                <h2 className="text-[42px] md:text-[80px] font-extrabold text-white tracking-tight leading-[1.1] drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)]">
                   {words.map((w, wIdx) => {
                     const isHighlight = w.replace(/[.,]/g, '') === phrase.highlight.replace(/[.,]/g, '');
                     return (
-                      <span key={wIdx} className={isHighlight ? "text-[#C8F135]" : "text-white"}>
+                      <span key={wIdx} className={isHighlight ? "text-[#E5B268]" : "text-white"}>
                         {w}{wIdx < words.length - 1 ? ' ' : ''}
                       </span>
                     );
@@ -399,7 +288,7 @@ export default function Intro() {
       </section>
 
       {/* Stats Strip */}
-      <section className="bg-[#0A0A0A] border-t border-[#1a1a1a] py-12 px-6 relative z-10">
+      <section className="bg-[#0A0A0A]/40 backdrop-blur-md border-t border-white/10 py-12 px-6 relative z-10">
         <div className="container mx-auto max-w-7xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-transparent md:divide-white/10">
             <div className="text-center px-4 flex flex-col items-center">
@@ -436,7 +325,7 @@ export default function Intro() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="min-h-screen bg-[#0A0A0A] relative flex flex-col items-center justify-center px-6 overflow-hidden z-10">
+      <section className="min-h-screen bg-[#0A0A0A]/50 backdrop-blur-md relative flex flex-col items-center justify-center px-6 overflow-hidden z-10">
         {/* Animated Grid Overlay */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,black_40%,transparent_100%)] opacity-50" />
         
@@ -467,7 +356,7 @@ export default function Intro() {
             transition={{ duration: 0.6, delay: 0.2, ease: animEase }}
           >
             <Link to="/store">
-              <button className="h-[56px] px-8 rounded-full bg-[#C8F135] text-[#0A0A0A] font-bold text-[16px] shadow-[0_0_30px_rgba(200,241,53,0.3)] hover:shadow-[0_0_40px_rgba(200,241,53,0.5)] transition-all hover:scale-105 active:scale-95">
+              <button className="h-[56px] px-8 rounded-full bg-[#E5B268] text-[#0A0A0A] font-bold text-[16px] shadow-[0_0_30px_rgba(229,178,104,0.3)] hover:shadow-[0_0_40px_rgba(229,178,104,0.5)] transition-all hover:scale-105 active:scale-95">
                 Enter Store →
               </button>
             </Link>
@@ -490,7 +379,7 @@ const ProgressDot = ({ index, scrollYProgress }) => {
 
   return (
     <div 
-      className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${isActive ? 'bg-[#C8F135] scale-125' : 'bg-white/30'}`}
+      className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${isActive ? 'bg-[#E5B268] scale-125' : 'bg-white/30'}`}
     />
   );
 };

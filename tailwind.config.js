@@ -10,7 +10,7 @@ export default {
         'warm-white': '#F5F5F0',
         'soft-white': '#F0F0EB',
         'muted-white': '#E8E8E2',
-        'lime': '#C8F135',
+        'lime': '#E5B268',
         'ink': '#0A0A0A',
         'slate-muted': '#6B6B6B',
         'border-light': '#E2E2DC',
@@ -28,7 +28,7 @@ export default {
       boxShadow: {
         'card': '0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04)',
         'card-hover': '0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)',
-        'btn': '0 2px 8px rgba(200,241,53,0.4)',
+        'btn': '0 2px 8px rgba(229, 178, 104, 0.4)',
       },
       animation: {
         'float': 'float 3.5s ease-in-out infinite',

@@ -21,9 +21,10 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 60);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -54,7 +55,11 @@ const Navbar = () => {
         variants={navVariants}
         initial="hidden"
         animate="visible"
-        className="fixed top-0 left-0 right-0 z-50 h-16 glass-nav border-b border-border-light flex items-center"
+        className={`fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-500 ease-in-out flex items-center border-b ${
+          isScrolled
+            ? 'bg-[#0A0A0A]/85 backdrop-blur-xl border-white/10 shadow-lg'
+            : 'bg-transparent backdrop-blur-sm border-transparent'
+        }`}
       >
         <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between h-full">
 
@@ -63,7 +68,7 @@ const Navbar = () => {
             {location.pathname !== '/store' && location.pathname !== '/' && location.pathname !== '/intro' && (
               <button
                 onClick={() => navigate(-1)}
-                className="md:hidden text-ink p-1 -ml-1 mr-1 hover:text-lime transition-colors"
+                className="md:hidden text-white p-1 -ml-1 mr-1 hover:text-lime transition-colors"
               >
                 <ArrowLeft size={24} />
               </button>
@@ -72,7 +77,7 @@ const Navbar = () => {
               <motion.span
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-[22px] font-extrabold text-ink tracking-tight"
+                className="text-[22px] font-extrabold text-white tracking-tight"
               >
                 Fixora
               </motion.span>
@@ -96,42 +101,42 @@ const Navbar = () => {
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => setIsCartOpen(true)}
-              className="relative w-10 h-10 rounded-full flex items-center justify-center text-ink hover:bg-muted-white transition-colors"
+              className="relative w-10 h-10 rounded-full flex items-center justify-center text-white hover:text-[#E5B268] hover:bg-white/10 transition-colors"
             >
               <ShoppingBag size={20} />
               {cartCount > 0 && (
-                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-lime rounded-full border-2 border-warm-white"></span>
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#E5B268] rounded-full border-2 border-black"></span>
               )}
             </motion.button>
 
             <Link to="/wishlist">
               <motion.button
                 whileTap={{ scale: 0.97 }}
-                className="relative w-10 h-10 rounded-full flex items-center justify-center text-ink hover:bg-muted-white transition-colors"
+                className="relative w-10 h-10 rounded-full flex items-center justify-center text-white hover:text-[#E5B268] hover:bg-white/10 transition-colors"
               >
                 <Heart size={20} />
                 {wishlistCount > 0 && (
-                  <span className="absolute 1 top-1 right-1 w-2.5 h-2.5 bg-lime rounded-full border-2 border-warm-white"></span>
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#E5B268] rounded-full border-2 border-black"></span>
                 )}
               </motion.button>
             </Link>
 
-            <div className="ml-2 pl-2 border-l border-border-light">
+            <div className="ml-2 pl-2 border-l border-white/15">
               {isAuthenticated ? (
                 <Link to="/dashboard">
                   <motion.div
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.97 }}
-                    className="flex items-center gap-2 bg-white border border-border-light rounded-full p-1 pr-3 shadow-sm hover:shadow-card transition-all"
+                    className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full p-1 pr-3 shadow-sm hover:bg-white/20 transition-all text-white"
                   >
-                    <div className="w-8 h-8 rounded-full bg-tag-bg flex items-center justify-center overflow-hidden">
+                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
                       {user?.user_metadata?.avatar_url ? (
                         <img src={user.user_metadata.avatar_url} alt="User" className="w-full h-full object-cover" />
                       ) : (
-                        <User size={16} className="text-slate-muted" />
+                        <User size={16} className="text-white/70" />
                       )}
                     </div>
-                    <span className="text-sm font-medium text-ink max-w-[100px] truncate">
+                    <span className="text-sm font-medium text-white max-w-[100px] truncate">
                       {user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
                     </span>
                   </motion.div>
@@ -139,9 +144,9 @@ const Navbar = () => {
               ) : (
                 <Link to="/login">
                   <motion.div
-                    whileHover={{ y: -2 }}
+                    whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="flex items-center bg-white border border-border-light rounded-full px-4 py-2 text-sm font-medium text-ink shadow-sm hover:shadow-card transition-all"
+                    className="flex items-center bg-[#E5B268] text-ink rounded-full px-5 py-2 text-sm font-bold shadow-[0_0_15px_rgba(229,178,104,0.3)] hover:brightness-105 transition-all"
                   >
                     Sign In
                   </motion.div>
@@ -154,15 +159,15 @@ const Navbar = () => {
           <div className="md:hidden flex items-center gap-2">
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 text-ink hover:text-lime transition-colors"
+              className="relative p-2 text-white hover:text-[#E5B268] transition-colors"
             >
               <ShoppingBag size={24} />
               {cartCount > 0 && (
-                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-lime rounded-full border-2 border-warm-white"></span>
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#E5B268] rounded-full border-2 border-black"></span>
               )}
             </button>
             <button
-              className="text-ink p-2"
+              className="text-white p-2"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Menu size={24} />

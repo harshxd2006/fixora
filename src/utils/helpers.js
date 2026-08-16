@@ -17,8 +17,7 @@ export const getRandomItems = (arr, n) => {
   return shuffled.slice(0, n);
 };
 
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_URL = '/api/chat';
 
 export const matchQuery = async (query, list, keys = ['title', 'tags', 'shortDesc']) => {
   if (!query) return list;
@@ -44,8 +43,7 @@ Example: [2, 0, 5]`;
     const response = await fetch(GROQ_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',

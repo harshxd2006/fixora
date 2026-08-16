@@ -14,7 +14,7 @@ const BundleCard = ({ bundle }) => {
       </div>
 
       <div className="flex items-center gap-2 bg-white/10 w-fit px-3 py-1.5 rounded-full mb-6">
-        <Sparkles size={14} className="text-lime" />
+        <Sparkles size={14} className="text-[#E5B268]" />
         <span className="text-xs font-semibold text-white uppercase tracking-wider">AI Bundle</span>
       </div>
 
@@ -57,7 +57,7 @@ const BundleCard = ({ bundle }) => {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-12 h-12 rounded-full bg-lime text-ink flex items-center justify-center hover:brightness-110 transition-all"
+            className="w-12 h-12 rounded-full bg-[#E5B268] text-ink flex items-center justify-center hover:brightness-110 transition-all"
           >
             <ArrowRight size={20} />
           </motion.button>

@@ -65,7 +65,7 @@ const Products = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="pt-12 pb-24 px-6 min-h-screen bg-warm-white"
+      className="pt-12 pb-24 px-6 min-h-screen bg-transparent text-white relative z-10"
     >
       <Helmet>
         <title>All Products - Fixora</title>
@@ -79,13 +79,14 @@ const Products = () => {
             label="ALL PRODUCTS" 
             title="Tools to fix your life."
             subtitle="Browse our curated collection of problem-solving products. High quality, tested, and guaranteed to work."
+            dark
           />
         </div>
 
         {/* Recommended For You */}
         {recommendedProducts.length > 0 && !searchQuery && activeCategory === 'All' && (
           <div className="mb-16">
-            <h3 className="text-[20px] font-bold text-ink mb-6">Recommended for You</h3>
+            <h3 className="text-[20px] font-bold text-white mb-6">Recommended for You</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {recommendedProducts.map((product, i) => (
                 <motion.div
@@ -102,7 +103,7 @@ const Products = () => {
         )}
 
         {/* Controls Row */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 mt-12 border-b border-border-light pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 mt-12 border-b border-white/10 pb-6">
           
           {/* Categories */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto hide-scrollbar">
@@ -110,8 +111,8 @@ const Products = () => {
               onClick={() => setActiveCategory('All')}
               className={`whitespace-nowrap px-4 py-2 rounded-full text-[14px] font-medium transition-colors ${
                 activeCategory === 'All' 
-                  ? 'bg-ink text-white' 
-                  : 'bg-white text-slate-muted border border-border-light hover:border-ink hover:text-ink'
+                  ? 'bg-[#E5B268] text-ink font-bold shadow-sm' 
+                  : 'bg-white/10 text-white/80 border border-white/15 hover:bg-white/20 hover:text-white'
               }`}
             >
               All Products
@@ -122,8 +123,8 @@ const Products = () => {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`whitespace-nowrap px-4 py-2 rounded-full text-[14px] font-medium transition-colors ${
                   activeCategory === cat.id 
-                    ? 'bg-ink text-white' 
-                    : 'bg-white text-slate-muted border border-border-light hover:border-ink hover:text-ink'
+                    ? 'bg-[#E5B268] text-ink font-bold shadow-sm' 
+                    : 'bg-white/10 text-white/80 border border-white/15 hover:bg-white/20 hover:text-white'
                 }`}
               >
                 {cat.name}
@@ -139,11 +140,11 @@ const Products = () => {
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 bg-white border border-border-light rounded-full pl-10 pr-4 text-[14px] text-ink focus:border-ink outline-none transition-colors placeholder:text-[#9E9E98]"
+                className="w-full h-10 bg-white/10 border border-white/15 rounded-full pl-10 pr-4 text-[14px] text-white focus:border-[#E5B268] outline-none transition-colors placeholder:text-white/50"
               />
-              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-muted" />
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60" />
             </div>
-            <button className="w-10 h-10 bg-white border border-border-light rounded-full flex items-center justify-center text-ink hover:bg-soft-white transition-colors flex-shrink-0">
+            <button className="w-10 h-10 bg-white/10 border border-white/15 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors flex-shrink-0">
               <Filter size={16} />
             </button>
           </div>
@@ -153,7 +154,7 @@ const Products = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="animate-pulse bg-white rounded-[20px] h-[400px] border border-border-light"></div>
+              <div key={i} className="animate-pulse bg-white/10 rounded-[20px] h-[400px] border border-white/15"></div>
             ))}
           </div>
         ) : (
@@ -181,10 +182,10 @@ const Products = () => {
         )}
 
         {!isLoading && filteredProducts.length === 0 && (
-          <div className="text-center py-20 bg-white border border-border-light rounded-[24px] shadow-sm">
-            <Search size={48} className="mx-auto text-border-light mb-4" />
-            <h3 className="text-[18px] font-semibold text-ink mb-2">No products found</h3>
-            <p className="text-[14px] text-slate-muted">Try adjusting your search or filters.</p>
+          <div className="text-center py-20 bg-white/10 border border-white/15 rounded-[24px] shadow-sm text-white">
+            <Search size={48} className="mx-auto text-white/40 mb-4" />
+            <h3 className="text-[18px] font-semibold text-white mb-2">No products found</h3>
+            <p className="text-[14px] text-white/70">Try adjusting your search or filters.</p>
           </div>
         )}
 

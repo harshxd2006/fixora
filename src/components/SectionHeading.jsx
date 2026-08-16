@@ -10,7 +10,7 @@ const SectionHeading = ({ label, title, subtitle, centered = false, dark = false
           viewport={{ once: true }}
           className="inline-flex items-center gap-2 mb-4"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-lime"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#E5B268]"></span>
           <span className="text-[12px] font-medium uppercase tracking-[0.1em] text-slate-muted">
             {label}
           </span>
