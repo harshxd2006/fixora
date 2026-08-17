@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,7 +32,14 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   
-  const { signUp, signInWithGoogle } = useAuth();
+  const { signUp, signInWithGoogle, isAuthenticated, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, authLoading, navigate]);
   
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(schema)

@@ -7,32 +7,41 @@ export default function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if there is an error in URL
-    const hash = window.location.hash;
+    let isSubscribed = true;
+
     const searchParams = new URLSearchParams(window.location.search);
-    if (hash.includes('error') || searchParams.has('error')) {
-      navigate('/login?error=auth_failed', { replace: true });
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    
+    const errorParam = searchParams.get('error') || hashParams.get('error');
+    const errorDesc = searchParams.get('error_description') || hashParams.get('error_description');
+
+    if (errorParam || errorDesc) {
+      const message = errorDesc || errorParam || 'Authentication failed';
+      navigate(`/login?error=${encodeURIComponent(message)}`, { replace: true });
       return;
     }
 
-    // Instant session check for zero-delay redirect
+    // 1. Instant check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
+      if (session && isSubscribed) {
         navigate('/dashboard', { replace: true });
       }
     });
 
+    // 2. Listen for auth state change (Supabase's detectSessionInUrl handles code exchange automatically)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
+        if (!isSubscribed) return;
+        if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION' || event === 'TOKEN_REFRESHED') && session) {
           navigate('/dashboard', { replace: true });
-        } else if (event === 'SIGNED_OUT') {
-          navigate('/login', { replace: true });
         }
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isSubscribed = false;
+      subscription.unsubscribe();
+    };
   }, [navigate]);
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Loader2, ArrowRight } from 'lucide-react';
@@ -11,11 +11,27 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   
   const from = location.state?.from?.pathname || "/dashboard";
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, authLoading, navigate, from]);
+
+  // Read error parameter from URL if redirected back from AuthCallback
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const urlError = searchParams.get('error');
+    if (urlError) {
+      setError(decodeURIComponent(urlError));
+    }
+  }, [location.search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

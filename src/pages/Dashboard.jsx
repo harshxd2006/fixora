@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Package, Heart, Clock, LogOut, Search, User, ChevronRight, Loader2, AlertCircle, ShoppingBag, ExternalLink } from 'lucide-react';
+import { Package, Heart, Clock, LogOut, Search, User, ChevronRight, Loader2, AlertCircle, ShoppingBag, ExternalLink, Camera, Trash2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth';
 import { useWishlist } from '../hooks/useWishlist';
 import { supabase } from '../services/supabase';
@@ -11,18 +12,93 @@ import { formatINR } from '../utils/formatPrice';
 import ProductCard from '../components/ProductCard';
 import ProblemCard from '../components/ProblemCard';
 import CTAButton from '../components/CTAButton';
+import ImageCropModal from '../components/ImageCropModal';
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, avatarUrl, uploadAvatar, removeAvatar } = useAuth();
   const { wishlistIds } = useWishlist();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [ordersError, setOrdersError] = useState(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+
+  // Crop Modal state
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [selectedImageSrc, setSelectedImageSrc] = useState(null);
 
   const savedProducts = getProductsByIds(wishlistIds);
   const recentlyViewed = problems.slice(0, 3);
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Reset input element value so re-selecting same file triggers event
+    if (fileInputRef.current) fileInputRef.current.value = '';
+
+    // 1. Validate File Format (JPEG, PNG, WebP allowed. Reject videos, PDFs, SVGs, EXEs)
+    const validMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const isSvg = file.name.toLowerCase().endsWith('.svg') || file.type.includes('svg');
+
+    if (!validMimeTypes.includes(file.type) || isSvg) {
+      toast.error('Invalid file format. Please select a JPG, PNG, or WebP image.');
+      return;
+    }
+
+    // 2. Validate Source File Size Limit (10MB)
+    const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
+    if (file.size > MAX_SOURCE_BYTES) {
+      toast.error('Source image is too large. Please select an image under 10MB.');
+      return;
+    }
+
+    // Create object URL for local crop preview (does NOT upload to Supabase yet)
+    const objectUrl = URL.createObjectURL(file);
+    setSelectedImageSrc(objectUrl);
+    setCropModalOpen(true);
+  };
+
+  const handleCropCancel = () => {
+    setCropModalOpen(false);
+    if (selectedImageSrc) {
+      URL.revokeObjectURL(selectedImageSrc);
+    }
+    setSelectedImageSrc(null);
+  };
+
+  const handleCropSave = async (croppedFile) => {
+    setCropModalOpen(false);
+    setUploadingAvatar(true);
+
+    const { error } = await uploadAvatar(croppedFile);
+    
+    if (selectedImageSrc) {
+      URL.revokeObjectURL(selectedImageSrc);
+    }
+    setSelectedImageSrc(null);
+    setUploadingAvatar(false);
+
+    if (error) {
+      toast.error(error.message || 'Failed to upload cropped profile picture');
+    } else {
+      toast.success('Profile picture updated successfully!');
+    }
+  };
+
+  const handleAvatarRemove = async () => {
+    setUploadingAvatar(true);
+    const { error } = await removeAvatar();
+    setUploadingAvatar(false);
+
+    if (error) {
+      toast.error('Failed to remove profile picture');
+    } else {
+      toast.success('Profile picture removed');
+    }
+  };
 
   const fetchUserOrders = async () => {
     if (!user) return;
@@ -80,24 +156,75 @@ const Dashboard = () => {
         {/* WELCOME ROW */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div className="flex items-center gap-6">
-            <div className="w-20 h-20 rounded-full glass-card flex items-center justify-center overflow-hidden flex-shrink-0">
-              {user?.user_metadata?.avatar_url ? (
-                <img src={user.user_metadata.avatar_url} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-[24px] font-bold text-white">{getInitials(fullName)}</span>
-              )}
+            
+            {/* AVATAR WITH UPLOAD OVERLAY */}
+            <div className="relative group">
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleAvatarChange} 
+                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml"
+                className="hidden" 
+              />
+              
+              <div className="w-20 h-20 rounded-full glass-card flex items-center justify-center overflow-hidden flex-shrink-0 relative border-2 border-white/20 shadow-md">
+                {uploadingAvatar ? (
+                  <Loader2 size={26} className="animate-spin text-[#E5B268]" />
+                ) : avatarUrl ? (
+                  <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-[24px] font-bold text-white">{getInitials(fullName)}</span>
+                )}
+
+                {/* Hover Camera Icon Overlay */}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploadingAvatar}
+                  className="absolute inset-0 bg-black/65 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white disabled:opacity-0 cursor-pointer"
+                  title="Upload profile picture"
+                >
+                  <Camera size={20} className="text-[#E5B268]" />
+                </button>
+              </div>
             </div>
+
             <div>
               <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-1">
                 Hey, {fullName}
               </h1>
-              <p className="text-base text-white/70">Here's what's happening with your Fixora setup.</p>
+              <div className="flex items-center gap-4 text-xs font-semibold text-white/70">
+                <span>Here's what's happening with your Fixora setup.</span>
+                <div className="flex items-center gap-3">
+                  <button 
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploadingAvatar}
+                    className="text-[#E5B268] hover:underline flex items-center gap-1 transition-colors disabled:opacity-50"
+                  >
+                    <Camera size={13} /> Change Photo
+                  </button>
+                  {avatarUrl && (
+                    <button 
+                      type="button"
+                      onClick={handleAvatarRemove}
+                      disabled={uploadingAvatar}
+                      className="text-red-400 hover:underline flex items-center gap-1 transition-colors disabled:opacity-50"
+                    >
+                      <Trash2 size={13} /> Remove Photo
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           
           <div className="flex gap-3">
-            <button className="glass-card px-6 py-2.5 text-[14px] font-medium text-white hover:border-[#E5B268] transition-colors">
-              Edit Profile
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              className="glass-card px-6 py-2.5 text-[14px] font-medium text-white hover:border-[#E5B268] transition-colors flex items-center gap-2"
+            >
+              <Camera size={16} className="text-[#E5B268]" /> Edit Photo
             </button>
             <button 
               onClick={handleLogout}
@@ -315,6 +442,14 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* IMAGE CROP MODAL */}
+        <ImageCropModal 
+          imageSrc={selectedImageSrc}
+          isOpen={cropModalOpen}
+          onClose={handleCropCancel}
+          onCropSave={handleCropSave}
+        />
 
       </div>
     </motion.div>

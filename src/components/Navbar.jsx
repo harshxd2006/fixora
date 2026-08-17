@@ -14,7 +14,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, avatarUrl } = useAuth();
   const { wishlistCount } = useWishlist();
   const { cartCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -130,8 +130,8 @@ const Navbar = () => {
                     className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full p-1 pr-3 shadow-sm hover:bg-white/20 transition-all text-white"
                   >
                     <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
-                      {user?.user_metadata?.avatar_url ? (
-                        <img src={user.user_metadata.avatar_url} alt="User" className="w-full h-full object-cover" />
+                      {avatarUrl ? (
+                        <img src={avatarUrl} alt="User" className="w-full h-full object-cover" />
                       ) : (
                         <User size={16} className="text-white/70" />
                       )}
@@ -185,72 +185,97 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-ink/20 backdrop-blur-sm z-[60] md:hidden"
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] md:hidden"
             />
             <motion.div
               variants={menuVariants}
               initial="closed"
               animate="open"
               exit="closed"
-              className="fixed top-0 right-0 bottom-0 w-[280px] bg-white z-[70] shadow-2xl flex flex-col md:hidden"
+              className="fixed top-0 right-0 bottom-0 w-[300px] bg-[#0A0A0A]/95 backdrop-blur-2xl border-l border-white/15 text-white z-[70] shadow-2xl flex flex-col md:hidden"
             >
-              <div className="p-6 border-b border-border-light flex justify-between items-center">
-                <span className="text-xl font-bold text-ink">Menu</span>
+              <div className="p-6 border-b border-white/15 flex justify-between items-center bg-white/5">
+                <span className="text-xl font-extrabold text-white tracking-tight">Menu</span>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 -mr-2 text-slate-muted hover:text-ink transition-colors"
+                  className="p-2 -mr-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
                 >
-                  <X size={24} />
+                  <X size={22} />
                 </button>
               </div>
 
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 <div className="relative w-full">
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="w-full h-11 bg-warm-white border border-border-light rounded-xl pl-4 pr-10 outline-none text-ink text-sm focus:border-ink transition-colors"
-                  />
-                  <Search size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-muted" />
+                  <SearchBar placeholder="Search problems..." />
                 </div>
 
-                <ul className="space-y-4">
-                  {NAV_LINKS.map(link => (
-                    <li key={link.path}>
-                      <Link
-                        to={link.path}
-                        className={`block text-lg font-medium transition-colors ${location.pathname === link.path ? 'text-ink' : 'text-slate-muted hover:text-ink'
+                <ul className="space-y-2">
+                  {NAV_LINKS.map(link => {
+                    const isActive = location.pathname === link.path;
+                    return (
+                      <li key={link.path}>
+                        <Link
+                          to={link.path}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={`block text-base font-semibold px-4 py-3 rounded-xl transition-all ${
+                            isActive 
+                              ? 'text-[#E5B268] bg-[#E5B268]/15 border border-[#E5B268]/30 font-bold' 
+                              : 'text-white/80 hover:text-white hover:bg-white/10'
                           }`}
-                      >
-                        {link.name}
-                      </Link>
-                    </li>
-                  ))}
+                        >
+                          {link.name}
+                        </Link>
+                      </li>
+                    );
+                  })}
                   <li>
-                    <Link to="/wishlist" className="block text-lg font-medium text-slate-muted hover:text-ink transition-colors">
-                      Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
+                    <Link 
+                      to="/wishlist" 
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`flex items-center justify-between text-base font-semibold px-4 py-3 rounded-xl transition-all ${
+                        location.pathname === '/wishlist'
+                          ? 'text-[#E5B268] bg-[#E5B268]/15 border border-[#E5B268]/30 font-bold'
+                          : 'text-white/80 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      <span>Wishlist</span>
+                      {wishlistCount > 0 && (
+                        <span className="text-xs font-bold bg-[#E5B268] text-[#0A0A0A] px-2 py-0.5 rounded-full">
+                          {wishlistCount}
+                        </span>
+                      )}
                     </Link>
                   </li>
                 </ul>
               </div>
 
-              <div className="p-6 border-t border-border-light bg-warm-white">
+              <div className="p-6 border-t border-white/15 bg-white/5">
                 {isAuthenticated ? (
-                  <Link to="/dashboard" className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-white border border-border-light flex items-center justify-center overflow-hidden">
-                      {user?.user_metadata?.avatar_url ? (
-                        <img src={user.user_metadata.avatar_url} alt="User" className="w-full h-full object-cover" />
+                  <Link 
+                    to="/dashboard" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-white/10 border border-white/15 hover:bg-white/20 transition-all text-white"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0">
+                      {avatarUrl ? (
+                        <img src={avatarUrl} alt="User" className="w-full h-full object-cover" />
                       ) : (
-                        <User size={20} className="text-slate-muted" />
+                        <User size={20} className="text-white/70" />
                       )}
                     </div>
-                    <div>
-                      <div className="font-medium text-ink">Dashboard</div>
-                      <div className="text-xs text-slate-muted truncate max-w-[150px]">{user?.email}</div>
+                    <div className="overflow-hidden">
+                      <div className="font-bold text-white text-sm truncate">
+                        {user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
+                      </div>
+                      <div className="text-xs text-white/60 truncate max-w-[170px]">{user?.email}</div>
                     </div>
                   </Link>
                 ) : (
-                  <Link to="/login" className="block w-full py-3 bg-ink text-white text-center rounded-xl font-medium">
+                  <Link 
+                    to="/login" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="btn-primary block w-full text-center py-3 text-sm font-bold"
+                  >
                     Sign In
                   </Link>
                 )}
