@@ -59,9 +59,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* LEFT PANEL - Hidden on mobile */}
-      <div className="hidden lg:flex w-1/2 bg-ink relative flex-col p-12 overflow-hidden">
+    <div className="min-h-screen flex bg-[#0A0A0A]">
+      {/* LEFT PANEL - Desktop Workspace Visual */}
+      <div className="hidden lg:flex w-[50%] xl:w-[54%] bg-[#0A0A0A] relative flex-col p-8 xl:p-12 overflow-hidden justify-between">
         {/* Subtle grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_40%,transparent_100%)] opacity-30"></div>
         
@@ -70,30 +70,24 @@ const Login = () => {
             <Link to="/" className="text-[28px] font-extrabold text-white tracking-tight block w-fit">
               Fixora.
             </Link>
-            <p className="text-[#a0a0a0] mt-4 max-w-md leading-relaxed">
+            <p className="text-[#a0a0a0] mt-3 max-w-md leading-relaxed text-sm sm:text-base">
               Sign in to manage your problem-solving solutions and track your smart bundles.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mt-12 mb-auto max-w-lg">
-            <motion.div 
-              animate={{ y: [-5, 5, -5] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-[20px] p-6"
-            >
-              <div className="w-10 h-10 bg-white/10 rounded-xl mb-4"></div>
-              <div className="h-3 bg-white/20 rounded w-3/4 mb-2"></div>
-              <div className="h-3 bg-white/10 rounded w-1/2"></div>
-            </motion.div>
-            <motion.div 
-              animate={{ y: [5, -5, 5] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-[20px] p-6 mt-8"
-            >
-              <div className="w-10 h-10 bg-white/10 rounded-xl mb-4"></div>
-              <div className="h-3 bg-white/20 rounded w-3/4 mb-2"></div>
-              <div className="h-3 bg-white/10 rounded w-1/2"></div>
-            </motion.div>
+          {/* CINEMATIC WORKSPACE HERO VIGNETTE */}
+          <div className="relative w-full my-4 xl:my-6 h-[250px] lg:h-[290px] xl:h-[330px] rounded-3xl overflow-hidden bg-black shadow-2xl">
+            <img 
+              src="/workspace-hero.png" 
+              alt="Fixora Workspace" 
+              className="w-full h-full object-cover object-[15%_35%] select-none pointer-events-none"
+              loading="eager"
+            />
+            {/* Soft borderless multi-directional vignettes */}
+            <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-[#0A0A0A] via-[#0A0A0A]/70 to-transparent pointer-events-none"></div>
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/65 to-transparent pointer-events-none"></div>
+            <div className="absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent pointer-events-none"></div>
+            <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#0A0A0A]/50 to-transparent pointer-events-none"></div>
           </div>
 
           <p className="text-[13px] text-[#6B6B6B]">
@@ -102,20 +96,33 @@ const Login = () => {
         </div>
       </div>
 
-      {/* RIGHT PANEL */}
-      <div className="w-full lg:w-1/2 bg-transparent flex items-center justify-center p-6 sm:p-12 text-white">
-        <div className="w-full max-w-[420px]">
+      {/* RIGHT PANEL - Sign In Form (Viewport Fitted) */}
+      <div className="w-full lg:w-[50%] xl:w-[46%] bg-transparent flex items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-12 text-white">
+        <div className="w-full max-w-[420px] my-auto">
           
-          <Link to="/" className="lg:hidden text-[24px] font-extrabold text-white tracking-tight block w-fit mb-8">
-            Fixora.
-          </Link>
+          {/* Mobile Header with Compact Workspace Visual */}
+          <div className="lg:hidden mb-4">
+            <Link to="/" className="text-[24px] font-extrabold text-white tracking-tight block w-fit mb-2">
+              Fixora.
+            </Link>
+            <div className="relative w-full h-28 xs:h-36 rounded-2xl overflow-hidden bg-black my-2.5 shadow-md">
+              <img 
+                src="/workspace-hero.png" 
+                alt="Fixora Workspace" 
+                className="w-full h-full object-cover object-[15%_30%] select-none pointer-events-none"
+                loading="eager"
+              />
+              <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-[#0A0A0A] to-transparent pointer-events-none"></div>
+              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0A0A0A] to-transparent pointer-events-none"></div>
+            </div>
+          </div>
 
-          <div className="glass-card p-8 sm:p-10">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">Welcome back</h1>
-            <p className="text-[14px] text-white/70 mb-8">Please enter your details to sign in.</p>
+          <div className="glass-card p-6 sm:p-8 xl:p-10 shadow-2xl">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-1.5">Welcome back</h1>
+            <p className="text-[14px] text-white/70 mb-5">Please enter your details to sign in.</p>
             
             {error && (
-              <div className="bg-red-500/20 text-red-300 text-[13px] p-3 rounded-xl mb-6 font-medium border border-red-500/30 flex items-start gap-2">
+              <div className="bg-red-500/20 text-red-300 text-[13px] p-3 rounded-xl mb-5 font-medium border border-red-500/30 flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 flex-shrink-0"></span>
                 {error}
               </div>
@@ -124,7 +131,7 @@ const Login = () => {
             <button 
               type="button" 
               onClick={handleGoogleLogin}
-              className="w-full h-12 glass-card hover:border-[#E5B268] flex items-center justify-center gap-3 text-[14px] font-semibold text-white transition-colors mb-6"
+              className="w-full h-12 glass-card hover:border-[#E5B268] flex items-center justify-center gap-3 text-[14px] font-semibold text-white transition-colors mb-5"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -135,14 +142,14 @@ const Login = () => {
               Continue with Google
             </button>
 
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-4 mb-5">
               <div className="flex-1 h-px bg-white/15"></div>
               <span className="text-[11px] text-white/50 uppercase tracking-wider">or continue with email</span>
               <div className="flex-1 h-px bg-white/15"></div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              <div className="space-y-1.5">
                 <label className="text-[12px] font-semibold text-[#E5B268] uppercase tracking-wider">Email</label>
                 <div className="relative">
                   <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50" size={18} />
@@ -152,12 +159,12 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     placeholder="name@example.com"
-                    className="w-full h-12 glass-input pl-10"
+                    className="w-full h-11 glass-input pl-10 text-sm"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <div className="flex justify-between">
                   <label className="text-[12px] font-semibold text-[#E5B268] uppercase tracking-wider">Password</label>
                   <a href="#" className="text-[12px] text-white/70 hover:text-[#E5B268] transition-colors">Forgot?</a>
@@ -170,7 +177,7 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="••••••••"
-                    className="w-full h-12 glass-input pl-10"
+                    className="w-full h-11 glass-input pl-10 text-sm"
                   />
                 </div>
               </div>
@@ -178,13 +185,13 @@ const Login = () => {
               <button 
                 type="submit" 
                 disabled={loading}
-                className="btn-primary w-full h-12 mt-6 flex items-center justify-center disabled:opacity-70"
+                className="btn-primary w-full h-11 mt-5 flex items-center justify-center disabled:opacity-70 font-bold"
               >
-                {loading ? <Loader2 size={18} className="animate-spin" /> : "Sign In"}
+                {loading ? <Loader2 size={18} className="animate-spin text-[#0A0A0A]" /> : "Sign In"}
               </button>
             </form>
 
-            <p className="text-center text-[14px] text-white/70 mt-8">
+            <p className="text-center text-[14px] text-white/70 mt-6">
               Don't have an account?{' '}
               <Link to="/signup" className="text-[#E5B268] font-semibold hover:underline">
                 Sign up
