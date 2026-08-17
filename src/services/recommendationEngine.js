@@ -1,6 +1,5 @@
 import { products } from '../data/products';
-
-const GROQ_URL = '/api/chat';
+import { postToChatApi } from './apiClient';
 
 /**
  * Dynamic fallback generator for offline or network retry mode
@@ -101,25 +100,16 @@ JSON schema:
 
     const userPrompt = `User Problem: "${userProblem.trim()}"`;
 
-    const response = await fetch(GROQ_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        max_tokens: 300,
-        temperature: 0.2, // Low temperature for consistent structured output
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ]
-      })
+    const data = await postToChatApi({
+      model: 'llama-3.1-8b-instant',
+      max_tokens: 300,
+      temperature: 0.2, // Low temperature for consistent structured output
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ]
     });
 
-    if (!response.ok) {
-      throw new Error(`AI Intent extraction failed: ${response.status}`);
-    }
-
-    const data = await response.json();
     const rawContent = data.choices[0].message.content;
     const cleaned = rawContent.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(cleaned);

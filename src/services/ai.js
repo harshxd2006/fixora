@@ -1,28 +1,21 @@
-const GROQ_URL = '/api/chat';
+import { postToChatApi } from './apiClient';
+import { getProblemRecommendations, extractProblemIntent, scoreAndRankProducts } from './recommendationEngine';
 
-// Call Groq API via our backend
+// Export recommendation engine utilities for search components
+export { getProblemRecommendations, extractProblemIntent, scoreAndRankProducts, postToChatApi };
+
+// Call Groq API via serverless backend or direct fallback
 const callGroq = async (prompt, systemPrompt = '') => {
-  const response = await fetch(GROQ_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
-      max_tokens: 500,
-      temperature: 0.7,
-      messages: [
-        ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
-        { role: 'user', content: prompt }
-      ]
-    })
+  const data = await postToChatApi({
+    model: 'llama-3.1-8b-instant',
+    max_tokens: 500,
+    temperature: 0.7,
+    messages: [
+      ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
+      { role: 'user', content: prompt }
+    ]
   });
 
-  if (!response.ok) {
-    throw new Error(`Groq API error: ${response.status}`);
-  }
-
-  const data = await response.json();
   return data.choices[0].message.content;
 };
 
@@ -76,8 +69,6 @@ Example: ["messy-desk", "tangled-cables", "bad-posture"]`;
   }
 };
 
-import { getProblemRecommendations, extractProblemIntent } from './recommendationEngine';
-
 // Feature 2.1: Advanced semantic search for problems & products
 export const semanticSearchProblems = async (query, problems) => {
   try {
@@ -123,9 +114,6 @@ Example:
   }
 };
 
-// Export getProblemRecommendations for full catalog search
-export { getProblemRecommendations, extractProblemIntent };
-
 // Feature 3: Generate a personalized product recommendation reason
 export const getProductRecommendationReason = async (problemTitle, productName) => {
   try {
@@ -138,13 +126,12 @@ export const getProductRecommendationReason = async (problemTitle, productName) 
   }
 };
 
-// Feature 4: AI chat assistant for problem solving
+// Feature 4: AI chat assistant for problem solving with product recommendations
 export const chatWithAI = async (userMessage, conversationHistory = []) => {
   try {
     const systemPrompt = `You are Fixora's AI assistant. You help people solve their daily life problems by recommending products and practical tips. 
 Keep responses short (2-3 sentences max). 
-Always be helpful and suggest checking Fixora's product catalog.
-Focus on workspace, productivity, health, and lifestyle problems.`;
+Always be helpful, concise, and suggest checking the recommended products below.`;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -152,22 +139,35 @@ Focus on workspace, productivity, health, and lifestyle problems.`;
       { role: 'user', content: userMessage }
     ];
 
-    const response = await fetch(GROQ_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    const [data, intent] = await Promise.all([
+      postToChatApi({
         model: 'llama-3.1-8b-instant',
         max_tokens: 200,
         temperature: 0.8,
         messages
-      })
-    });
+      }).catch(() => null),
+      extractProblemIntent(userMessage).catch(() => null)
+    ]);
 
-    const data = await response.json();
-    return data.choices[0].message.content;
+    const ranked = scoreAndRankProducts(intent, userMessage);
+    const recommendedProducts = ranked.slice(0, 2).map(r => r.product);
+
+    const aiText = data?.choices?.[0]?.message?.content || 
+      "Here are the best solutions from our catalog to solve your problem:";
+
+    return {
+      text: aiText,
+      products: recommendedProducts
+    };
   } catch (error) {
-    return "I am having trouble connecting right now. Please browse our problems page to find your solution.";
+    console.error('Chat Assistant Error:', error);
+    const intent = await extractProblemIntent(userMessage).catch(() => null);
+    const ranked = scoreAndRankProducts(intent, userMessage);
+    const fallbackProducts = ranked.slice(0, 2).map(r => r.product);
+
+    return {
+      text: "Here are the top-rated Fixora products designed specifically for your setup:",
+      products: fallbackProducts
+    };
   }
 };

@@ -17,7 +17,7 @@ export const getRandomItems = (arr, n) => {
   return shuffled.slice(0, n);
 };
 
-const GROQ_URL = '/api/chat';
+import { postToChatApi } from '../services/apiClient';
 
 export const matchQuery = async (query, list, keys = ['title', 'tags', 'shortDesc']) => {
   if (!query) return list;
@@ -40,22 +40,13 @@ Rank the top most relevant items based on semantic similarity to the query.
 Return ONLY a JSON array of the matching indices (integers).
 Example: [2, 0, 5]`;
 
-    const response = await fetch(GROQ_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        max_tokens: 300,
-        temperature: 0.3,
-        messages: [{ role: 'user', content: prompt }]
-      })
+    const data = await postToChatApi({
+      model: 'llama-3.1-8b-instant',
+      max_tokens: 300,
+      temperature: 0.3,
+      messages: [{ role: 'user', content: prompt }]
     });
 
-    if (!response.ok) throw new Error('API error');
-    
-    const data = await response.json();
     const cleaned = data.choices[0].message.content.replace(/```json|```/g, '').trim();
     const indices = JSON.parse(cleaned);
     
