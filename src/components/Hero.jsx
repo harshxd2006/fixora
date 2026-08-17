@@ -189,21 +189,21 @@ const Hero = () => {
             Tell Fixora what's bothering you in plain English. Our AI finds the products and solutions designed to fix it.
           </motion.p>
 
-          {/* Buttons - Mobile Full-Width Responsive (0.8s) */}
+          {/* Buttons - Mobile Compact Auto-Width (0.8s) */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
+            className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4"
           >
-            <Link to="/problems" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 rounded-full bg-[#E5B268] text-ink font-bold text-sm sm:text-base flex items-center justify-center gap-2 hover:brightness-105 active:scale-[0.98] transition-all">
+            <Link to="/problems" className="w-auto">
+              <button className="w-auto h-12 sm:h-14 px-7 sm:px-8 rounded-full bg-[#E5B268] text-ink font-bold text-sm sm:text-base flex items-center justify-center gap-2 hover:brightness-105 active:scale-[0.98] transition-all shadow-lg shadow-[#E5B268]/20 whitespace-nowrap">
                 Find My Solution <ArrowRight size={18} />
               </button>
             </Link>
 
-            <Link to="/products" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm sm:text-base border border-white/20 backdrop-blur-md active:scale-[0.98] transition-all flex items-center justify-center">
+            <Link to="/products" className="w-auto">
+              <button className="w-auto h-12 sm:h-14 px-7 sm:px-8 rounded-full bg-white/[0.12] hover:bg-white/20 text-white font-semibold text-sm sm:text-base border border-white/30 backdrop-blur-md active:scale-[0.98] transition-all flex items-center justify-center shadow-sm whitespace-nowrap">
                 Explore Solutions
               </button>
             </Link>
